@@ -1,9 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Avenir.ttc">
+            <string>Avenir-Heavy</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
@@ -16,12 +25,56 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tree BackGround" translatesAutoresizingMaskIntoConstraints="NO" id="UPs-PU-l2G">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ikQ-O2-jCz">
+                                <rect key="frame" x="0.0" y="335" width="375" height="332"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.73333333329999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rsX-E8-jmV">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="335"/>
+                                <color key="backgroundColor" red="0.98431372549999996" green="0.39607843139999999" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Follow App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jnu-bS-A2a">
+                                <rect key="frame" x="56" y="271" width="262" height="124"/>
+                                <color key="tintColor" red="0.94719622461928932" green="0.94719622461928932" blue="0.94719622461928932" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="40"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" red="0.21568627450980393" green="0.36862745098039218" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
+                            </label>
+                        </subviews>
+                        <color key="tintColor" red="1" green="0.90922852109999996" blue="0.84121695829999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ikQ-O2-jCz" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="335" id="58c-02-rK9"/>
+                            <constraint firstItem="rsX-E8-jmV" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="5f9-44-VUH"/>
+                            <constraint firstItem="jnu-bS-A2a" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="56" id="6Uu-0u-J4h"/>
+                            <constraint firstAttribute="trailing" secondItem="ikQ-O2-jCz" secondAttribute="trailing" id="JSp-av-OWO"/>
+                            <constraint firstItem="ikQ-O2-jCz" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="LoH-8N-faX"/>
+                            <constraint firstAttribute="trailing" secondItem="UPs-PU-l2G" secondAttribute="trailing" id="Oay-EW-cpb"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="UPs-PU-l2G" secondAttribute="bottom" id="QK4-uZ-llo"/>
+                            <constraint firstItem="ikQ-O2-jCz" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="UEK-ez-FCp"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="ikQ-O2-jCz" secondAttribute="bottom" id="aEf-mq-OIK"/>
+                            <constraint firstAttribute="trailing" secondItem="rsX-E8-jmV" secondAttribute="trailing" id="ar7-lB-uQO"/>
+                            <constraint firstItem="jnu-bS-A2a" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="251" id="awM-gP-V2y"/>
+                            <constraint firstItem="UPs-PU-l2G" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="dFh-cE-pge"/>
+                            <constraint firstItem="rsX-E8-jmV" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ezj-Yy-fvP"/>
+                            <constraint firstItem="rsX-E8-jmV" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="fmE-HX-Bs8"/>
+                            <constraint firstItem="UPs-PU-l2G" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="nm9-Sy-KBl"/>
+                            <constraint firstItem="ikQ-O2-jCz" firstAttribute="top" secondItem="rsX-E8-jmV" secondAttribute="bottom" id="q6W-bP-Um9"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="jnu-bS-A2a" secondAttribute="bottom" constant="272" id="wNg-Xq-ptW"/>
+                            <constraint firstItem="jnu-bS-A2a" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="wb5-Lq-Wft"/>
+                            <constraint firstAttribute="trailing" secondItem="jnu-bS-A2a" secondAttribute="trailing" constant="57" id="xHX-7d-nV1"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Tree BackGround" width="640" height="960"/>
+    </resources>
 </document>
