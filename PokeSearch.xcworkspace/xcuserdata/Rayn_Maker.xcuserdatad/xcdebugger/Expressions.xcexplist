@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "closure #1 in JoingOrgVC2.checkFollowing2():JoingOrgVC2.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "value">
+            </PersistentString>
+            <PersistentString
+               value = "self.organization[x].OrgId">
+            </PersistentString>
+            <PersistentString
+               value = "self.organization[x].foll">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in OrganizationList2.retrieveSouls(indexPath:):OrganizationList2.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "value">
+            </PersistentString>
+            <PersistentString
+               value = "soulArray">
+            </PersistentString>
+            <PersistentString
+               value = "self.organization[indexPath].OrgId!">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in OrganizationList2.retrieveSouls(indexPath:):OrganizationList2.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "mySoulsKey">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

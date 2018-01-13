@@ -1,0 +1,6 @@
+framework module Pods_PokeSearchTests {
+  umbrella header "Pods-PokeSearchTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
