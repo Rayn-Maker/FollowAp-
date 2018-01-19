@@ -25,13 +25,16 @@ class OrganizationList2: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        fetchMyOrgs()
+        fetchMyChurch()
+        
+       
     }
 
 
     @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     @IBOutlet weak var leaderPicture: UIImageView!
     @IBOutlet weak var currentLeader: UILabel!
+    @IBOutlet weak var churchNames: UILabel!
     @IBOutlet weak var orgsListTableView: UITableView!
     @IBOutlet weak var authorsLbl: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -40,9 +43,24 @@ class OrganizationList2: UIViewController {
     var ref = FIRDatabase.database().reference()
     var orgKey = String()
     var organization = [OrgData]()
+    var organization2 = [Churches]()
     var myOrg = [String]()
+    var myChurch = [String]()
     var mySoulsKey = [String]()
     var soulArray = [SoulData]()
+    var churchDisplay = [String]()
+    var strng = ""
+    
+    func churchname(churcdd: [String]) {
+        if churchDisplay.count > 0 {
+            for x in 0...churcdd.count-1 {
+                if strng != churcdd[x] {
+                strng += churcdd[x]
+                }
+            }
+            churchNames.text = strng
+        }
+    }
     
     
     func logout() {
@@ -54,28 +72,31 @@ class OrganizationList2: UIViewController {
             }
         }
     
-    func fetchMyOrgs(){
+    func fetchMyOrgs(churchKey: String){
         organization.removeAll()
         myOrg.removeAll()
         let ref = FIRDatabase.database().reference()
-        ref.child("leaders").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
+        ref.child("churches").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
+            if snapshot.value is NSNull {
+                print("organiation folder is null")
+            }
         
             let users = snapshot.value as! [String : AnyObject]
     
             for (_, value) in users {
-                if let uid = value["uid"] as? String {
-                    if uid == FIRAuth.auth()?.currentUser?.uid {
-                        if let mygroups = value["My Organizations"] as? [String : String]{
+                if let uid = value["churchKey"] as? String {
+                    if uid == churchKey {
+                        if let mygroups = value["cells"] as? [String : String]{
                             for (_,orgs) in mygroups{
                                 self.myOrg.append(orgs)
                             }
                         }
-            self.myOrg.append(FIRAuth.auth()!.currentUser!.uid)
+          //  self.myOrg.append(FIRAuth.auth()!.currentUser!.uid)
         
             ref.child("Organizations").queryOrderedByKey().observeSingleEvent(of: .value, with: { (snap) in
         
         
-            if snapshot.value is NSNull {
+            if snap.value is NSNull {
                 print("organiation folder is null")
             }
             else {
@@ -111,12 +132,81 @@ class OrganizationList2: UIViewController {
         
                 })
                             }
-                        }
-                    }
+                        } //
+                    } //
              self.organization.sort(by: { $0.date.compare($1.date) == .orderedDescending })
-                    self.orgsListTableView.reloadData()
+            
                 })
                 ref.removeAllObservers()
+        
+    }
+
+    func fetchMyChurch(){
+        organization2.removeAll()
+        myChurch.removeAll()
+        let ref = FIRDatabase.database().reference()
+        ref.child("leaders").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
+            
+            let users = snapshot.value as! [String : AnyObject]
+            
+            for (_, value) in users {
+                if let uid = value["uid"] as? String {
+                    if uid == FIRAuth.auth()?.currentUser?.uid {
+                        if let mygroupss = value["MyChurch"] as? [String : String]{
+                            for (_,orgs) in mygroupss {
+                                self.myChurch.append(orgs)
+                            }
+                        }
+                        self.myChurch.append(FIRAuth.auth()!.currentUser!.uid)
+                        
+                        ref.child("churches").queryOrderedByKey().observeSingleEvent(of: .value, with: { (snap) in
+                            
+                            
+                            if snapshot.value is NSNull {
+                                print("organiation folder is null")
+                            }
+                            else {
+                                
+                                self.organization2.removeAll()
+                                
+                                guard let groupsSanpshot = snap.value as? [String : AnyObject] else {return}
+                                
+                                for (_, value) in groupsSanpshot { //organizationID
+                                    if let organizationID = value["churchKey"] as? String {
+                                        for each in self.myChurch {
+                                            if each == organizationID {
+                                                let dateFormatter = DateFormatter()
+                                                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss +zzzz"
+                                                var organizationToShow = Churches()
+                                                
+                                                if  let creator = value["creatorName"] as? String, let creatorID = value["creatorID"] as? String, let organizationName = value["churchName"] as? String, let dateString = value["date"] as? String, let date = dateFormatter.date(from: dateString) {
+                                                    organizationToShow.creatorName = creator
+                                                    organizationToShow.creatorID = creatorID
+                                                    organizationToShow.churchID = organizationID
+                                                    organizationToShow.churchName = organizationName
+                                                    organizationToShow.date = date
+                                                    self.organization2.insert(organizationToShow, at: 0)
+                                                    self.churchDisplay.append(organizationName)
+                                                    self.fetchMyOrgs(churchKey: organizationID)
+                                                }
+                                            }
+                                        }
+                                        self.churchname(churcdd: self.churchDisplay)
+                                        self.organization2.sort(by: { $0.date.compare($1.date) == .orderedDescending })
+                                        self.orgsListTableView.reloadData()
+                                    }
+                                }
+                            }
+                            
+                        })
+                    }
+                }
+            }
+            self.churchname(churcdd: self.churchDisplay)
+            self.organization.sort(by: { $0.date.compare($1.date) == .orderedDescending })
+            self.orgsListTableView.reloadData()
+        })
+        ref.removeAllObservers()
         
     }
 
@@ -154,7 +244,6 @@ class OrganizationList2: UIViewController {
             self.ref.child("Organizations").updateChildValues(org)
             self.ref.child("leaders").child(uid).updateChildValues(undrUsers)
             self.ref.child("Organizations").child(self.orgKey).updateChildValues(underOrgs)
-            self.fetchMyOrgs()
             self.orgsListTableView.reloadData()
             }
         }
@@ -233,19 +322,22 @@ class OrganizationList2: UIViewController {
  
     
     @IBAction func homePressed(_ sender: Any) {
+        
         dismiss(animated: true, completion: nil)
     }
     
     @IBAction func refresh(_ sender: Any) {
         orgsListTableView.isHidden = false
-        fetchMyOrgs()
+//        fetchMyOrgs()
         displayPic()
     }
     
     
     @IBAction func signOutPressed(_ sender: Any) {
-        
         logout()
+//       performSegue(withIdentifier: "signout", sender: nil)
+//        dismiss(animated: true, completion: nil)
+       
     }
     
 }
@@ -304,7 +396,7 @@ extension OrganizationList2: UITableViewDataSource, UITableViewDelegate,  UISear
                     if value as! String == uid {
                     self.ref.child("Organizations").child(self.organization[indexPath.row].OrgId!).child("Members/\(ke)").removeValue()
                     self.ref.child("leaders").child(uid).child("My Organizations/\(ke)").removeValue()
-                    self.fetchMyOrgs()
+//                    self.fetchMyOrgs()
 
                         }
                     }

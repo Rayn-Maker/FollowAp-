@@ -34,4 +34,23 @@ class OrgData: NSObject {
     var sharedKey: String!
 }
 
+class Churches {
+    var churchName: String?
+    var churchID: String?
+    var churchZoneName: String?
+    var churchZoneId: String?
+    var creatorName: String?
+    var creatorID: String?
+     var date: Date!
+}
+
+class Zones {
+    var zoneName: String?
+    var zoneKey: String?
+    var churchArray: [Churches]?
+    var date: Date?
+    var creatorID: String?
+    var creatorName: String?
+}
+
 

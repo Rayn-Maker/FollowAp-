@@ -39,8 +39,6 @@ class JoingOrgVC2: UIViewController {
         let ref = FIRDatabase.database().reference()
         ref.child("Organizations").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
             
-           
-            
             if snapshot.value is NSNull {
                 print("organiation folder is null")
             }

@@ -27,6 +27,10 @@
 		689A88491F17D82A00288D98 /* SoulDataVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689A88481F17D82A00288D98 /* SoulDataVC.swift */; };
 		689A884B1F18CFF000288D98 /* MyInvitesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689A884A1F18CFF000288D98 /* MyInvitesVC.swift */; };
 		689A884D1F1C3A1700288D98 /* MySoulsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689A884C1F1C3A1700288D98 /* MySoulsData.swift */; };
+		689E0CB8200FC57B00261CCA /* AdminVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E0CB7200FC57B00261CCA /* AdminVC.swift */; };
+		689E0CBA200FEB2800261CCA /* GroupMaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E0CB9200FEB2700261CCA /* GroupMaintenanceVC.swift */; };
+		689E0CBC20114E5900261CCA /* LeaderMaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E0CBB20114E5900261CCA /* LeaderMaintenanceVC.swift */; };
+		68AB76C82011EBD10007DB3C /* soulMaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB76C72011EBD10007DB3C /* soulMaintenanceVC.swift */; };
 		68CBC61E1FDF045700BD9B20 /* OrganizationList2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CBC61D1FDF045700BD9B20 /* OrganizationList2.swift */; };
 		68CBC6221FDF275000BD9B20 /* JoingOrgVC2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CBC6211FDF275000BD9B20 /* JoingOrgVC2.swift */; };
 		68CBC6241FDF308000BD9B20 /* OrganizationHomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CBC6231FDF308000BD9B20 /* OrganizationHomeVC.swift */; };
@@ -103,6 +107,10 @@
 		689A88481F17D82A00288D98 /* SoulDataVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoulDataVC.swift; sourceTree = "<group>"; };
 		689A884A1F18CFF000288D98 /* MyInvitesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyInvitesVC.swift; sourceTree = "<group>"; };
 		689A884C1F1C3A1700288D98 /* MySoulsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySoulsData.swift; sourceTree = "<group>"; };
+		689E0CB7200FC57B00261CCA /* AdminVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminVC.swift; sourceTree = "<group>"; };
+		689E0CB9200FEB2700261CCA /* GroupMaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMaintenanceVC.swift; sourceTree = "<group>"; };
+		689E0CBB20114E5900261CCA /* LeaderMaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderMaintenanceVC.swift; sourceTree = "<group>"; };
+		68AB76C72011EBD10007DB3C /* soulMaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = soulMaintenanceVC.swift; sourceTree = "<group>"; };
 		68CBC61D1FDF045700BD9B20 /* OrganizationList2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationList2.swift; sourceTree = "<group>"; };
 		68CBC6211FDF275000BD9B20 /* JoingOrgVC2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoingOrgVC2.swift; sourceTree = "<group>"; };
 		68CBC6231FDF308000BD9B20 /* OrganizationHomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationHomeVC.swift; sourceTree = "<group>"; };
@@ -208,6 +216,10 @@
 		683EADB51F1151E600DEA85D /* VC */ = {
 			isa = PBXGroup;
 			children = (
+				68AB76C72011EBD10007DB3C /* soulMaintenanceVC.swift */,
+				689E0CBB20114E5900261CCA /* LeaderMaintenanceVC.swift */,
+				689E0CB9200FEB2700261CCA /* GroupMaintenanceVC.swift */,
+				689E0CB7200FC57B00261CCA /* AdminVC.swift */,
 				683EADC21F1157A300DEA85D /* SignupViewController.swift */,
 				683EADC41F1157AB00DEA85D /* LoginViewController.swift */,
 				68CBC6211FDF275000BD9B20 /* JoingOrgVC2.swift */,
@@ -598,16 +610,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				689E0CBA200FEB2800261CCA /* GroupMaintenanceVC.swift in Sources */,
 				683EADC51F1157AB00DEA85D /* LoginViewController.swift in Sources */,
 				683EADB31F1151DD00DEA85D /* EventHomeVC.swift in Sources */,
 				683EADC31F1157A300DEA85D /* SignupViewController.swift in Sources */,
 				683EADBC1F11522100DEA85D /* SoulDataCell.swift in Sources */,
+				68AB76C82011EBD10007DB3C /* soulMaintenanceVC.swift in Sources */,
 				689A884B1F18CFF000288D98 /* MyInvitesVC.swift in Sources */,
 				689A88491F17D82A00288D98 /* SoulDataVC.swift in Sources */,
 				683FF46A1F1FEE6800FF6A55 /* RoundTextField.swift in Sources */,
 				683EAD781F0F1B1300DEA85D /* AppDelegate.swift in Sources */,
 				68CBC6221FDF275000BD9B20 /* JoingOrgVC2.swift in Sources */,
 				683EADBB1F11522100DEA85D /* SoulData.swift in Sources */,
+				689E0CBC20114E5900261CCA /* LeaderMaintenanceVC.swift in Sources */,
+				689E0CB8200FC57B00261CCA /* AdminVC.swift in Sources */,
 				683FF46C1F1FEE7200FF6A55 /* RoundedButton.swift in Sources */,
 				683EADBE1F11522100DEA85D /* OrgData.swift in Sources */,
 				68CBC61E1FDF045700BD9B20 /* OrganizationList2.swift in Sources */,
