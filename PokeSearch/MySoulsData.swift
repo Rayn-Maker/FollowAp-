@@ -11,8 +11,9 @@ import Firebase
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import MessageUI
 
-class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource  {
+class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource,  MFMessageComposeViewControllerDelegate  {
     
     
     ///////////////////////////// Soul Data Variables \\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -29,65 +30,37 @@ class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource 
     /////////////////////////////// finish soul data variables \\\\\\\\\\\\\\\\\
     
     /////////////////////////// Objects To Hide \\\\\\\\\\\\\\\\\\\\\\\
-    @IBOutlet weak var doneNotesBtn: UIButton!
-    @IBOutlet weak var saveNewNotesBtn: UIButton!
-    @IBOutlet weak var newNotesBtn: UIButton!
-    @IBOutlet weak var soulNotes: UITextView!
-    @IBOutlet weak var soulNotesTextInput: UITextView!
-    @IBOutlet weak var phoneNumberIcon: UITextView!
-    
-    @IBOutlet weak var cancelNewNotBtn: UIButton!
+
+
     /////////////////////// finish objects to hide \\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     
     ////////////////////// Variables to recieve keys \\\\\\\\\\\\\\\\\\\\\\
     var noteKeys = [String]()
     var eventID: String! // event id
     var orgID: String! // org's id
-     var mySoulData = [String]()
+    var mySoulData = [String]()
+    var phonNumbers = String()
     
     /////////////////////// finish keys \\\\\\\\\\\\\\\\\\\\\\\\\\
     
     func connectLbls(){
-        firstNameLabel.text = mySoulData[0]
-        lastNameLabel.text = mySoulData[1]
-        phoneNumber.text = mySoulData[2]
-        emailLabel.text = mySoulData[3]
-        invitedByLabel.text = mySoulData[4]
-        eventMetLabel.text = mySoulData[5]
-        addressLabel.text = mySoulData[6]
-        schoolLabel.text = mySoulData[7]
-        genderLabel.text = mySoulData[8]
-        raceLabel.text = mySoulData[9]
-        phoneNumberIcon.text = mySoulData[2]
+    
+            
+            firstNameLabel.text = "Gender: " + mySoulData[8]
+            lastNameLabel.text = "Last Name: " + mySoulData[1]
+            phoneNumber.text =  mySoulData[2]
+//            self.phonNumbers = mySoulData[2]
+            emailLabel.text = "Email: " + mySoulData[3]
+            invitedByLabel.text =  "Invitee: " + mySoulData[4]
+            eventMetLabel.text = "Event Met: " + mySoulData[5]
+            addressLabel.text =  "Adrress:" + mySoulData[6]
+            schoolLabel.text =  "School/Job: " + mySoulData[6]
+            genderLabel.text = "First Name: " + mySoulData[0]
+            raceLabel.text = "Race: " + mySoulData[9]
+ 
     }
     
-    func firsView() {
-        
-        tableView.isHidden = false
-        newNotesBtn.isHidden = false
-        saveNewNotesBtn.isHidden = true
-        soulNotes.isHidden = true
-        soulNotesTextInput.isHidden = true
-        doneNotesBtn.isHidden = true
-        cancelNewNotBtn.isHidden = true
-    }/// Function To Show First View
-    
-    func showNotes() {
-        tableView.isHidden = true
-        soulNotes.isHidden = false
-        doneNotesBtn.isHidden = false
-    } // Function TO Show Notes view
-    
-    func newNotes() {
-        firsView()
-        tableView.isHidden = true
-        saveNewNotesBtn.isHidden = false
-        newNotesBtn.isHidden = true
-        soulNotesTextInput.text = ""
-        soulNotesTextInput.isHidden = false
-        cancelNewNotBtn.isHidden = false
-    } // FUnction to show notes
-    
+  
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notesArray.count ?? 0
@@ -101,17 +74,10 @@ class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource 
 
     
     
-    
-    
-    @IBOutlet weak var scrolView: UIScrollView!
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        scrolView.contentSize.height = 350
-        
-        firsView()
+       
         connectLbls()
         retrieveNotes()
     }
@@ -122,8 +88,7 @@ class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        showNotes()
-        soulNotes.text = self.notesArray[indexPath.row].notes
+
     }
     
     
@@ -137,9 +102,7 @@ class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource 
         return cell
     }
     
-    @IBAction func newNotesPressed(_ sender: Any) {
-        newNotes()
-    }
+ 
     
     
     
@@ -151,127 +114,128 @@ class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource 
     var ref: FIRDatabaseReference!
     
     
-    @IBAction func savePressed(_ sender: Any) {
+    func newNote() {
         
+        let uid = FIRAuth.auth()!.currentUser!.uid
+        let ref = FIRDatabase.database().reference()
         
-        if self.soulNotesTextInput.text != "" {
-            
-            let uid = FIRAuth.auth()!.currentUser!.uid
-            let ref = FIRDatabase.database().reference()
-            
-            let alert = UIAlertController(title: "Response", message: "Did They Respond", preferredStyle: .alert)
-            let yes = UIAlertAction(title: "Yes", style: .default, handler: { (_) in
-                // go in and updat ir
-                
-                ref.child("souls").child(self.soulsID).observeSingleEvent(of: .value, with: { (snapshot) in
-                    if snapshot.value is NSNull {
-                        // create file and fill
-                    } else {
-                        if let soul = snapshot.value as? [String : AnyObject] {
-                            var irr = soul["response"] as! Int
-                            irr += 1
-                            
-                            
-                            
-                            
-                            var folcount = soul["followCount"] as! Int
-                            var iRate = Double()
-                            folcount += +1
-                            
-                            iRate = Double(irr) / Double(folcount)
-                            
-                            iRate = Double(round(100*iRate)/100)
-                            let updateResponse = ["response" : irr]
-                            let updateFcount = ["followCount" : folcount]
-                            let updateIR = ["IR" : iRate]
-                            ref.child("souls").child(self.soulsID).updateChildValues(updateResponse)
-                            ref.child("souls").child(self.soulsID).updateChildValues(updateFcount)
-                            ref.child("souls").child(self.soulsID).updateChildValues(updateIR)
-                            
-                            self.view.endEditing(true)
-                            
-                        }
-                    }
-                    
-                }) //
-                
-            })
-            let no = UIAlertAction(title: "No", style: .destructive, handler: { (_) in
-                // go in and update ir
-                
-                ref.child("souls").child(self.soulsID).observeSingleEvent(of: .value, with: { (snapshot) in
-                    if snapshot.value is NSNull {
-                        // create file and fill
-                    } else {
-                        if let soul = snapshot.value as? [String : AnyObject] {
-                            var irr = soul["response"] as! Int
-                            var folcount = soul["followCount"] as! Int
-                            var iRate = Double()
-                            folcount += +1
-                            
-                            iRate = Double(irr) / Double(folcount)
-                            
-                            iRate = Double(round(100*iRate)/100)
-                            
-                            let updateResponse = ["response" : irr]
-                            let updateFcount = ["followCount" : folcount]
-                            let updateIR = ["IR" : iRate]
-                            
-                            let updateDict = ["response" : irr,
-                                              "followCount" : folcount,
-                                              "IR" : iRate] as [String : Any]
-                            
-                            
-                            
-                            ref.child("souls").child(self.soulsID).updateChildValues(updateResponse)
-                            ref.child("souls").child(self.soulsID).updateChildValues(updateFcount)
-                            ref.child("souls").child(self.soulsID).updateChildValues(updateIR)
-                            
-                            self.view.endEditing(true)
-                        }
-                    }
-                    
-                }) //
-            })
-            alert.addAction(yes)
-            alert.addAction(no)
-            self.present(alert, animated: true, completion: nil)
-            
+        let alert = UIAlertController(title: "Response", message: "Did They Respond", preferredStyle: .alert)
+        alert.addTextField { (textField) in
+            textField.placeholder = "Enter Note Summary here."
+        }
+        let yes = UIAlertAction(title: "Yes", style: .default, handler: { (_) in
             var userName: String!
-            
-            view.endEditing(true)
+            guard var text = alert.textFields?.first?.text else { return }
             userName = FIRAuth.auth()!.currentUser!.displayName!
+            let notesKey = ref.child("souls").child(self.soulsID).child("FollowUP_Notes").childByAutoId().key
             
-            let notesKey = ref.child("souls").child(soulsID).child("FollowUP_Notes").childByAutoId().key
+            // go in and updat ir
             
-            
-            retrieveNotes()
-            view.endEditing(true)
-            firsView()
+            ref.child("souls").child(self.soulsID).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.value is NSNull {
+                    // create file and fill
+                } else {
+                    if let soul = snapshot.value as? [String : AnyObject] {
+                        var irr = soul["response"] as! Int
+                        irr += 1
+                        
+                        var folcount = soul["followCount"] as! Int
+                        var iRate = Double()
+                        folcount += +1
+                        
+                        iRate = Double(irr) / Double(folcount)
+                        
+                        iRate = Double(round(100*iRate)/100)
+                        let updateResponse = ["response" : irr]
+                        let updateFcount = ["followCount" : folcount]
+                        let updateIR = ["IR" : iRate]
+                        ref.child("souls").child(self.soulsID).updateChildValues(updateResponse)
+                        ref.child("souls").child(self.soulsID).updateChildValues(updateFcount)
+                        ref.child("souls").child(self.soulsID).updateChildValues(updateIR)
+                        
+                        
+                        
+                        self.view.endEditing(true)
+                        
+                    }
+                }
+                
+            }) //
             let dateString = String(describing: Date())
             
-            
-            
-            
             let note = ["notesKey" : notesKey,
-                        "Notes" : soulNotesTextInput.text,
+                        "Notes" : text,
                         "Author" : userName,
                         "time" : dateString] as [String : Any]
             
             let prayers = ["\(notesKey)" : note]
             
+            text += "Notes By \(userName)"
             
-            ref.child("souls").child(soulsID).child("Follow_Up_Notes").updateChildValues(prayers)
-        }
+            ref.child("souls").child(self.soulsID).child("Follow_Up_Notes").updateChildValues(prayers)
             
-        else {
-            let alert = UIAlertController(title: "Missing Information", message: "Please Write Some Notes", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
+        })
+        let no = UIAlertAction(title: "No", style: .destructive, handler: { (_) in
+            var userName: String!
+            guard var text = alert.textFields?.first?.text else { return }
+            userName = FIRAuth.auth()!.currentUser!.displayName!
+            
+            let notesKey = ref.child("souls").child(self.soulsID).child("FollowUP_Notes").childByAutoId().key
+            
+            ref.child("souls").child(self.soulsID).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.value is NSNull {
+                    // create file and fill
+                } else {
+                    if let soul = snapshot.value as? [String : AnyObject] {
+                        var irr = soul["response"] as! Int
+                        var folcount = soul["followCount"] as! Int
+                        var iRate = Double()
+                        folcount += +1
+                        
+                        iRate = Double(irr) / Double(folcount)
+                        
+                        iRate = Double(round(100*iRate)/100)
+                        
+                        let updateResponse = ["response" : irr]
+                        let updateFcount = ["followCount" : folcount]
+                        let updateIR = ["IR" : iRate]
+                        
+                        let updateDict = ["response" : irr,
+                                          "followCount" : folcount,
+                                          "IR" : iRate] as [String : Any]
+                        
+                        
+                        
+                        ref.child("souls").child(self.soulsID).updateChildValues(updateResponse)
+                        ref.child("souls").child(self.soulsID).updateChildValues(updateFcount)
+                        ref.child("souls").child(self.soulsID).updateChildValues(updateIR)
+                        
+                        self.view.endEditing(true)
+                    }
+                }
+                
+            }) //
+            let dateString = String(describing: Date())
+            
+            let note = ["notesKey" : notesKey,
+                        "Notes" : text,
+                        "Author" : userName,
+                        "time" : dateString] as [String : Any]
+            
+            let prayers = ["\(notesKey)" : note]
+            
+            text += "Notes By \(userName)"
+            
+            ref.child("souls").child(self.soulsID).child("Follow_Up_Notes").updateChildValues(prayers)
+        })
+        
+        alert.addAction(yes)
+        alert.addAction(no)
+        self.present(alert, animated: true, completion: nil)
+        
+        retrieveNotes()
         
     }
-    
     // Retrieve Follow Up Notes
     
     func retrieveNotes() {
@@ -314,14 +278,7 @@ class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource 
         
     }
     
-    @IBAction func doneWithNotes(_ sender: Any) {
-        firsView()
-    }
-    
-    @IBAction func cancelNewNotePressed(_ sender: Any) {
-        firsView()
-        view.endEditing(true)
-    }
+
     
     @IBAction func refresh(_ sender: Any) {
         viewDidLoad()
@@ -330,6 +287,78 @@ class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource 
     @IBAction func backPressed(_ sender: Any) {
         
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func call(_ sender: Any?){
+        self.phonNumbers = mySoulData[2]
+        self.phonNumbers = self.phonNumbers.replacingOccurrences(of: "-", with: "")
+        self.phonNumbers = self.phonNumbers.replacingOccurrences(of: " ", with: "")
+        self.phonNumbers = self.phonNumbers.replacingOccurrences(of: ")", with: "")
+        self.phonNumbers = self.phonNumbers.replacingOccurrences(of: "(", with: "")
+        self.phonNumbers = self.phonNumbers.replacingOccurrences(of: "+", with: "")
+        
+        if phonNumbers.count > 10 {
+            self.phonNumbers.remove(at: phonNumbers.startIndex)
+        }
+        if phonNumbers.count > 10 {
+            self.phonNumbers.remove(at: phonNumbers.startIndex)
+        }
+        
+        if phonNumbers.count > 10 {
+            String(self.phonNumbers.characters.dropLast())
+        }
+        let dd = self.phonNumbers
+        
+        guard let number = URL(string: "tel://" + dd) else {
+            
+            let ref = FIRDatabase.database().reference()
+            let dateString = String(describing: Date())
+            let undrChurches = ["recent" : dateString]
+            ref.child("souls").child(self.soulsID).updateChildValues(undrChurches)
+            return }
+        UIApplication.shared.open(number)
+        
+        let ref = FIRDatabase.database().reference()
+        let dateString = String(describing: Date())
+        let undrChurches = ["recent" : dateString]
+        ref.child("souls").child(self.soulsID).updateChildValues(undrChurches)
+        
+    }
+    
+    @IBAction func sendMessage(_ sender: Any?) {
+        
+        if (MFMessageComposeViewController.canSendText()) {
+            let controller = MFMessageComposeViewController()
+            controller.body = ""
+            controller.recipients = [mySoulData[2]]
+            controller.messageComposeDelegate = self
+            self.present(controller, animated: true, completion: nil)
+        }
+        let ref = FIRDatabase.database().reference()
+        let dateString = String(describing: Date())
+        let undrChurches = ["recent" : dateString]
+        ref.child("souls").child(self.soulsID).updateChildValues(undrChurches)
+        
+    }
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        //... handle sms screen actions
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    @IBAction func urgencyToggle(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0{
+            // ui alert and create new note.
+            newNote()
+            sender.selectedSegmentIndex = 1
+        } else if sender.selectedSegmentIndex == 1 {
+           
+            
+        }
     }
     
 }

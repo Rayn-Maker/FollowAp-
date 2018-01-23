@@ -33,6 +33,8 @@ struct SoulData {
     var inviteeID: String!
     var followUpCount: Int!
     var response: Int!
+    var soulReorder: Date!
+    var recent: Date!
    
 }
 
@@ -53,6 +55,14 @@ struct LeadersData {
     var followUpNotes: String!
     var totalInvites: String!
     var foll: String!
+}
+
+struct Attendance {
+    var came: String!
+    var name: String!
+    var dateS: String!
+    var date: Date!
+    var id: String!
 }
 
 struct SoulNotes {

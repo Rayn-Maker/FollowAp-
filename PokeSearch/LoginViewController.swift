@@ -46,9 +46,7 @@ class LoginViewController: UIViewController {
                 appDel.logUser()
             }
         })
-        
-        
+
     }
     
-
 }

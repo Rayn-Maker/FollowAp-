@@ -10,8 +10,9 @@ import UIKit
 import Firebase
 import FirebaseStorage
 import FirebaseDatabase
+import MessageUI
 
-class OrganizationList2: UIViewController {
+class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,9 +26,7 @@ class OrganizationList2: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         
-        fetchMyChurch()
-        
-       
+        fetchMyChurch() 
     }
 
 
@@ -38,6 +37,7 @@ class OrganizationList2: UIViewController {
     @IBOutlet weak var orgsListTableView: UITableView!
     @IBOutlet weak var authorsLbl: UILabel!
     @IBOutlet weak var searchBar: UISearchBar!
+
     
     var strn = String()
     var ref = FIRDatabase.database().reference()
@@ -48,6 +48,7 @@ class OrganizationList2: UIViewController {
     var myChurch = [String]()
     var mySoulsKey = [String]()
     var soulArray = [SoulData]()
+    var soulEmail = [SoulData]()
     var churchDisplay = [String]()
     var strng = ""
     
@@ -250,9 +251,9 @@ class OrganizationList2: UIViewController {
         alert.addAction(cancel)
         alert.addAction(post)
         present(alert, animated: true, completion: nil)
-
         
     }
+    
 
 
     
@@ -340,6 +341,7 @@ class OrganizationList2: UIViewController {
        
     }
     
+   
 }
 
 

@@ -31,6 +31,8 @@
 		689E0CBA200FEB2800261CCA /* GroupMaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E0CB9200FEB2700261CCA /* GroupMaintenanceVC.swift */; };
 		689E0CBC20114E5900261CCA /* LeaderMaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E0CBB20114E5900261CCA /* LeaderMaintenanceVC.swift */; };
 		68AB76C82011EBD10007DB3C /* soulMaintenanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB76C72011EBD10007DB3C /* soulMaintenanceVC.swift */; };
+		68AB76CF2013D7760007DB3C /* EventManagementVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68AB76CE2013D7760007DB3C /* EventManagementVC.swift */; };
+		68AD04CA2016857E0083918B /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AD04C92016857D0083918B /* MessageUI.framework */; };
 		68CBC61E1FDF045700BD9B20 /* OrganizationList2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CBC61D1FDF045700BD9B20 /* OrganizationList2.swift */; };
 		68CBC6221FDF275000BD9B20 /* JoingOrgVC2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CBC6211FDF275000BD9B20 /* JoingOrgVC2.swift */; };
 		68CBC6241FDF308000BD9B20 /* OrganizationHomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CBC6231FDF308000BD9B20 /* OrganizationHomeVC.swift */; };
@@ -111,6 +113,8 @@
 		689E0CB9200FEB2700261CCA /* GroupMaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMaintenanceVC.swift; sourceTree = "<group>"; };
 		689E0CBB20114E5900261CCA /* LeaderMaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderMaintenanceVC.swift; sourceTree = "<group>"; };
 		68AB76C72011EBD10007DB3C /* soulMaintenanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = soulMaintenanceVC.swift; sourceTree = "<group>"; };
+		68AB76CE2013D7760007DB3C /* EventManagementVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventManagementVC.swift; sourceTree = "<group>"; };
+		68AD04C92016857D0083918B /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		68CBC61D1FDF045700BD9B20 /* OrganizationList2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationList2.swift; sourceTree = "<group>"; };
 		68CBC6211FDF275000BD9B20 /* JoingOrgVC2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoingOrgVC2.swift; sourceTree = "<group>"; };
 		68CBC6231FDF308000BD9B20 /* OrganizationHomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrganizationHomeVC.swift; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68AD04CA2016857E0083918B /* MessageUI.framework in Frameworks */,
 				D4C2337F78CF9006945AD10E /* Pods_PokeSearch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,6 +157,7 @@
 		434A91FCFFD25B9D580B806D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68AD04C92016857D0083918B /* MessageUI.framework */,
 				74C89CD9FB7567CBA186DF75 /* Pods_PokeSearch.framework */,
 				0341CD35D84CDA9B67CD0430 /* Pods_PokeSearchTests.framework */,
 				04837F1B76564AD7A74D59DB /* Pods_PokeSearchUITests.framework */,
@@ -216,10 +222,7 @@
 		683EADB51F1151E600DEA85D /* VC */ = {
 			isa = PBXGroup;
 			children = (
-				68AB76C72011EBD10007DB3C /* soulMaintenanceVC.swift */,
-				689E0CBB20114E5900261CCA /* LeaderMaintenanceVC.swift */,
-				689E0CB9200FEB2700261CCA /* GroupMaintenanceVC.swift */,
-				689E0CB7200FC57B00261CCA /* AdminVC.swift */,
+				68AB76CD2013D6FC0007DB3C /* ManagementVC */,
 				683EADC21F1157A300DEA85D /* SignupViewController.swift */,
 				683EADC41F1157AB00DEA85D /* LoginViewController.swift */,
 				68CBC6211FDF275000BD9B20 /* JoingOrgVC2.swift */,
@@ -251,6 +254,18 @@
 				683FF46B1F1FEE7200FF6A55 /* RoundedButton.swift */,
 			);
 			name = Objects;
+			sourceTree = "<group>";
+		};
+		68AB76CD2013D6FC0007DB3C /* ManagementVC */ = {
+			isa = PBXGroup;
+			children = (
+				689E0CB7200FC57B00261CCA /* AdminVC.swift */,
+				68AB76CE2013D7760007DB3C /* EventManagementVC.swift */,
+				689E0CB9200FEB2700261CCA /* GroupMaintenanceVC.swift */,
+				689E0CBB20114E5900261CCA /* LeaderMaintenanceVC.swift */,
+				68AB76C72011EBD10007DB3C /* soulMaintenanceVC.swift */,
+			);
+			name = ManagementVC;
 			sourceTree = "<group>";
 		};
 		68E2FE7D1FD9FFD70060566E /* Post */ = {
@@ -398,7 +413,7 @@
 								enabled = 0;
 							};
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.WAC = {
 								enabled = 0;
@@ -630,6 +645,7 @@
 				689A884D1F1C3A1700288D98 /* MySoulsData.swift in Sources */,
 				683EADBD1F11522100DEA85D /* OrganizationCell.swift in Sources */,
 				68CBC6241FDF308000BD9B20 /* OrganizationHomeVC.swift in Sources */,
+				68AB76CF2013D7760007DB3C /* EventManagementVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -785,6 +801,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
+				CODE_SIGN_ENTITLEMENTS = PokeSearch/PokeSearch.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F2B5QD97WH;
@@ -806,6 +823,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_USE_OPTIMIZATION_PROFILE = YES;
+				CODE_SIGN_ENTITLEMENTS = PokeSearch/PokeSearch.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = F2B5QD97WH;

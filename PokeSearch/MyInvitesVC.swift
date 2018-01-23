@@ -11,8 +11,9 @@ import Firebase
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import MessageUI
 
-class MyInvitesVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class MyInvitesVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,9 @@ class MyInvitesVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
     
      var soulArray = [SoulData]()
     var mySoulsKey = [String]()
+    var emailString = String()
+    var emailFile = String()
+    var eventsIdToAdd: String!
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return soulArray.count ?? 0
@@ -47,7 +51,7 @@ class MyInvitesVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         let cell =  tableView.dequeueReusableCell(withIdentifier: "mySoulsCell", for: indexPath)
         
         
-        cell.textLabel?.text = self.soulArray[indexPath.row].firstName + " " + self.soulArray[indexPath.row].lastName + "   " + "IR -\(self.soulArray[indexPath.row].ir ?? 0)"
+         cell.textLabel?.text = self.soulArray[indexPath.row].firstName + " " + self.soulArray[indexPath.row].lastName + "   " + "IR -\(self.soulArray[indexPath.row].ir ?? 0)" 
         
         
         
@@ -111,6 +115,7 @@ class MyInvitesVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
                             }
                         }
                         self.soulArray.sort(by: { $0.firstName < $1.firstName })
+                        self.formatEmailMessage()
                         self.tableView.reloadData()
                         
                     })
@@ -192,6 +197,97 @@ class MyInvitesVC: UIViewController, UITableViewDelegate, UITableViewDataSource 
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
 
+    }
+    
+    func formatEmailMessage(){
+         let name = FIRAuth.auth()?.currentUser?.displayName
+        self.emailString = "----Souls For \(name ?? "")----\n "
+        if soulArray.count > 0 {
+            for x in 0...soulArray.count - 1 {
+                self.emailString += "\nSoul \(x+1) \n"
+                self.emailString += "\t Full Name: "
+                self.emailString += soulArray[x].firstName + " " + soulArray[x].lastName
+                self.emailString += "\n\t Phone Number: "
+                self.emailString += soulArray[x].phoneNumber
+                self.emailString += "\n\t Email: "
+                self.emailString += soulArray[x].email
+                self.emailString += "\n\t Event Met: "
+                self.emailString += soulArray[x].eventContacted
+                self.emailString += "\n\t Invitee: "
+                self.emailString += soulArray[x].invitee
+                self.emailString += "\n\t Race: "
+                self.emailString += soulArray[x].race
+                self.emailString += "\n\t Gender: "
+                self.emailString += soulArray[x].sex
+                self.emailString += "\n\t Interest Rate: "
+                self.emailString += "\(soulArray[x].ir ?? 0.0)\n"
+            }
+            
+            self.emailString += "\n== You have \(soulArray.count) Total amount of souls "
+            self.saveFile()
+        } else {
+            //self.emailString += "Sorry this group has no souls yet"
+        }
+    }
+    
+    ///// Send Message of All Soul Data
+    @IBAction func sendEmail(_ sender: Any) {
+        let mail = configureMailViewCOntroller()
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mail, animated: true, completion: nil)
+        } else {
+            showMailError()
+        }
+    }
+    
+    func configureMailViewCOntroller() -> MFMailComposeViewController {
+        
+        let name = FIRAuth.auth()?.currentUser?.displayName
+        
+        let mailControllerVC = MFMailComposeViewController()
+        mailControllerVC.mailComposeDelegate = self
+        
+        mailControllerVC.setToRecipients([])
+        mailControllerVC.setSubject("\(name ?? " ")'s Souls")
+        mailControllerVC.setMessageBody("\(emailFile)", isHTML: false)
+        return mailControllerVC
+    }
+    
+    func showMailError(){
+        let sendMailError = UIAlertController(title: "error", message: "Mail not sent", preferredStyle: .alert)
+        let dismiss = UIAlertAction(title: "ok", style: .default, handler: nil)
+        sendMailError.addAction(dismiss)
+        self.present(sendMailError, animated: true, completion: nil)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func saveFile(){
+        // Save data to file
+        let fileName = "Test2"
+        let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("txt")
+        //        print("FilePath: \(fileURL.path)")
+        
+        let writeString = "\(emailString )"
+        do {
+            // Write to the file
+            try writeString.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
+        } catch let error as NSError {
+            //            print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
+        }
+        
+        var readString = "" // Used to store the file contents
+        do {
+            // Read the file contents
+            emailFile = try String(contentsOf: fileURL)
+        } catch let error as NSError {
+            print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
+        }
+        print("File Text: \(emailFile)")
     }
 }
 

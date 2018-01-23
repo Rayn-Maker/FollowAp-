@@ -37,6 +37,7 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     var eventInfo = EventData()
     var OrgStuf = OrgData()
     var eventArray = [EventData]()
+    var eventArrayAttendance = EventData()
     var eventsIdToAdd: String!
     var mySoulsKey = [String]()
     
@@ -49,9 +50,6 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     var orgID: String! // org's id
     var soulsID: String! // org's id
 
-    
-    
-    
     
     
     override func viewDidLoad() {
@@ -72,7 +70,7 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
          checkEvent()
         firsView()
        retrieveSouls()
-        
+        retrieveAttendanceArray()
         
     }
     
@@ -87,6 +85,8 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         }
         }
     }
+    
+
     
     
     func retrieveSouls() {
@@ -156,6 +156,72 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         
     }
     
+    func retrieveAttendanceArray() {
+        
+        let ref = FIRDatabase.database().reference()
+        ref.child("Organizations").child(self.orgID!).child("Events").child(self.eventID!).queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
+            
+            
+            if snapshot.value is NSNull {
+//                print("***** Null Events Folder there's a \(self.orgVCData.OrgId!) path *******")
+            }
+            else {
+                
+                let users = snapshot.value as! [String : AnyObject]
+                
+                
+                for (_, value) in users {
+                    
+                    var attendanceArray = [Attendance]()
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss +zzzz"
+                    let eventToPost = EventData()
+//                    if let author = value["creator"] as? String, let eventID = value["EventID"] as? String,  let eventTitle = value["EventName"] as? String, let creatorID = value["creatorID"] as? String, let dateString = value["date"] as? String, let date = dateFormatter.date(from: dateString) {
+//                        eventToPost.eventCreatorName = author
+//                        eventToPost.eventId = eventID
+//                        eventToPost.eventCreatorId = creatorID
+//                        eventToPost.eventName = eventTitle
+//                        eventToPost.date = date
+//
+                    
+                        if let attendance = value["Attendance"] as? [String : AnyObject] {
+                            let dateFormatters = DateFormatter()
+                            dateFormatters.dateFormat = "yyyy-MM-dd"
+                            var attendanceTotake = Attendance()
+                            
+                            for (_,c) in attendance {
+                                
+                                if let b = c as? [String : AnyObject] {
+                                    for (_,f) in b {
+                                        let came = f["came"] as? String ; let name = f["name"] as? String ; let dateStrings = f["date"] as? String; let date = dateFormatters.date(from: dateStrings!) ; let id = f["soulId"] as? String
+                                        
+                                        attendanceTotake.came = came
+                                        attendanceTotake.date = date
+                                        attendanceTotake.dateS = dateStrings
+                                        attendanceTotake.name = name
+                                        attendanceArray.append(attendanceTotake)
+                                    }
+                                    
+                                }
+                                
+                                
+                           // }
+                            //
+                        }
+                        attendanceArray.sort(by: { $0.date.compare($1.date) == .orderedDescending })
+                        eventToPost.attendanceArray = attendanceArray
+                        self.eventArrayAttendance.attendanceArray = attendanceArray
+                    }
+                }
+            }
+
+            
+        })
+        ref.removeAllObservers()
+        
+    }
+
+    
     
     func numberOfSections(in prayerTable: UITableView) -> Int {
         return 1
@@ -173,7 +239,7 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             let ref = FIRDatabase.database().reference()
             let key =  ref.child("Organizations").child(orgName).child(eventName).child("invites").childByAutoId().key
                 
-            let prayers = [ key :"\(self.soulArray[indexPath.row].soulID ?? "")"] // var inviteeID: String!
+            let prayers = [ "\(self.soulArray[indexPath.row].soulID ?? "")" :"\(self.soulArray[indexPath.row].soulID ?? "")"] // var inviteeID: String!
    
             
         ref.child("Organizations").child(self.orgID!).child("Events").child(self.eventsIdToAdd!).child("invites").updateChildValues(prayers)
@@ -229,6 +295,15 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             vc.noteKeys.append(self.soulArray[(indexPath!.row)].firstName)
             vc.soulData = self.soulArray[(indexPath!.row)]
 
+        }
+        if segue.identifier == "eventManagement" {
+            let vc = segue.destination as! EventManagementVC
+            vc.eventID = eventID
+            vc.eventName = eventName
+            vc.orgID = orgID
+            vc.attendancd = eventInfo.attendanceArray  //eventArrayAttendance.attendanceArray
+            
+            
         }
     }
     
@@ -413,6 +488,8 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     @IBAction func sendSouls(_ sender: Any){
+        pageName.text = eventInfo.eventName
+        orgNameTitle.text = orgName
         soulAddTableView.isHidden = true
         sendSoulBtn.isHidden = false 
          moveSouls.isHidden = true
@@ -448,7 +525,7 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 "Date" : dateString] as [String : Any]
     
     let prayers = ["\(soulID)" : soul]
-        let prayers2 = [key : soulID]
+    let prayers2 = [key : soulID]
     
     ref.child("Organizations").child(self.orgID!).child("Events").child(self.eventID!).child("invites").updateChildValues(prayers2)
     ref.child("Organizations").child(self.orgID!).child("All_Invites").updateChildValues(prayers2)
@@ -516,6 +593,40 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         viewDidLoad()
     }
     
+    @IBAction func urgencyToggle(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0{
+            self.sendSoulBtn.titleLabel!.text = "done"
+            eventsdropdown.isHidden = false
+            sendSoulBtn.isHidden = true
+            moveSouls.isHidden = false
+            if sender.selectedSegmentIndex == 0 {
+                sender.selectedSegmentIndex = 2
+    
+            }
+            sender.isSelected = false
+        } else if sender.selectedSegmentIndex == 1 {
+            sender.selectedSegmentIndex = 2
+            performSegue(withIdentifier: "eventManagement", sender: self)
+            
+        } else if sender.selectedSegmentIndex == 2 {
+            sender.selectedSegmentIndex = 2
+        } else if sender.selectedSegmentIndex == 3 {
+            soulstableView.isHidden = true
+            pageName.isHidden = true
+            orgNameTitle.isHidden = true
+            newSoulBtn.isHidden = true
+            labelsForNewSoul()
+            showSoulProfile()
+            showNewSoulData()
+            saveBtn.isHidden = false
+            cancelBtn.isHidden = false
+            sendSoulBtn.isHidden = true
+            sender.isSelected = false
+            sender.selectedSegmentIndex = 2
+        }
+    }
+    
+    
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         
@@ -534,10 +645,16 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         eventsdropdown.isHidden = true
         soulAddTableView.isHidden = false
-        eventsIdToAdd = eventArray[row].eventId
+        
+        if eventArray.count > 0 {
+            self.orgNameTitle.text = eventArray[row].eventName
+            self.pageName.text = "Copy to"
+         eventsIdToAdd = eventArray[row].eventId
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
         
             return eventArray[row].eventName
        

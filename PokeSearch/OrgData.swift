@@ -20,6 +20,7 @@ class EventData: NSObject {
     var GroupId: String?
     var GroupCreator: String?
     var date: Date!
+    var attendanceArray = [Attendance]()
 }
 
 class OrgData: NSObject {

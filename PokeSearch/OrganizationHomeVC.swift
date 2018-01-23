@@ -10,8 +10,9 @@ import UIKit
 import FirebaseDatabase
 import Firebase
 import FirebaseAuth
+import MessageUI
 
-class OrganizationHomeVC: UIViewController {
+class OrganizationHomeVC: UIViewController, MFMailComposeViewControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,30 +20,29 @@ class OrganizationHomeVC: UIViewController {
         // Do any additional setup after loading the view.
        
         setupVCData()
-        orgIdTitle.text = "FollwApp"
         orgCreatorLbl.text = orgVCData.OrgCreatorName
         pageTitle.text = orgVCData.OrgTitle
         searchBar.returnKeyType = UIReturnKeyType.search
         retrieveEvents()
         retrieveMyLeaders()
         retrieveAllLeaders()
-        retrievePendingLeaders()
+        //retrievePendingLeaders()
         fetchAlLSouls()
         retrieveSouls()
+        formatEmailMessage()
     }
   
     
     @IBOutlet weak var pageTitle: UILabel!
     @IBOutlet weak var orgCreatorLbl: UILabel!
-    @IBOutlet weak var orgIdTitle: UITextView!
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var currentLeadersTableView: UITableView!
     @IBOutlet weak var leaderRequestTableView: UITableView!
     @IBOutlet weak var leaderSearchTableView: UITableView!
     @IBOutlet weak var eventsTableView: UITableView!
-    @IBOutlet weak var finishMembersViewBtn: UIButton!
     @IBOutlet weak var delTableView: UITableView!
-     @IBOutlet weak var soulListTableView: UITableView!
+    @IBOutlet weak var soulListTableView: UITableView!
+    @IBOutlet weak var eventsdropdown: UIPickerView!
     
     @IBOutlet weak var toggleBtn: UISearchBar!
     var eventArray = [EventData]()
@@ -55,8 +55,12 @@ class OrganizationHomeVC: UIViewController {
     var inSearching = false
     var orgVCData = OrgData()
     var soulArray = [SoulData]()
+    var soulArrayInOrder = [SoulData]()
     var mySoulsKey = [String]()
     let ref = FIRDatabase.database().reference()
+    var emailString = String()
+    var emailFile = String()
+    var eventsIdToAdd: String!
     
     func setupVCData(){
        orgVCData.OrgId = iamUser[0]
@@ -81,8 +85,8 @@ class OrganizationHomeVC: UIViewController {
                 self.eventArray.removeAll()
                 
                 for (_, value) in users {
-                    //if let uid = value["userID"] as? String {
-                    // if uid == FIRAuth.auth()!.currentUser!.uid {
+                  
+                    var attendanceArray = [Attendance]()
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss +zzzz"
                     let eventToPost = EventData()
@@ -92,14 +96,41 @@ class OrganizationHomeVC: UIViewController {
                         eventToPost.eventCreatorId = creatorID
                         eventToPost.eventName = eventTitle
                         eventToPost.date = date
-                        self.eventArray.insert(eventToPost, at: 0)
+//                        self.eventArray.insert(eventToPost, at: 0)
+               
+                    if let attendance = value["Attendance"] as? [String : AnyObject] {
+                        let dateFormatters = DateFormatter()
+                        dateFormatters.dateFormat = "yyyy-MM-dd"
+                        var attendanceTotake = Attendance()
+                        
+                        for (_,c) in attendance {
+                            
+                            if let b = c as? [String : AnyObject] {
+                                for (_,f) in b {
+                                    let came = f["came"] as? String ; let name = f["name"] as? String ; let dateStrings = f["date"] as? String; let date = dateFormatters.date(from: dateStrings!) ; let id = f["soulId"] as? String
+                                    
+                                    attendanceTotake.came = came
+                                    attendanceTotake.date = date
+                                    attendanceTotake.dateS = dateStrings
+                                    attendanceTotake.name = name
+                                    attendanceArray.append(attendanceTotake)
+                                }
+                               
+                            }
+                           
+                          
+                        }
+                        //
                     }
-                    // }
-                    // }
+                    attendanceArray.sort(by: { $0.date.compare($1.date) == .orderedDescending })
+                    eventToPost.attendanceArray = attendanceArray
+                    self.eventArray.append(eventToPost)
+                 }
                 }
             }
             self.eventArray.sort(by: { $0.date.compare($1.date) == .orderedDescending })
             self.eventsTableView.reloadData()
+            self.eventsdropdown.reloadAllComponents()
             
         })
         ref.removeAllObservers()
@@ -134,6 +165,9 @@ class OrganizationHomeVC: UIViewController {
                         soulToShow.OrgID = orgId
                         soulToShow.date = date
                         soulToShow.ir = ir
+                        
+                        
+                        
                         self.allSoulAr.append(soulToShow)
                     }
                 }
@@ -266,6 +300,7 @@ class OrganizationHomeVC: UIViewController {
         
     }
     
+    /// Currently out of order but function is in great standing.
     func retrievePendingLeaders(){
        
         let ref = FIRDatabase.database().reference()
@@ -326,24 +361,7 @@ class OrganizationHomeVC: UIViewController {
         let ref = FIRDatabase.database().reference()
         ref.child("Organizations").child(self.orgVCData.OrgId!).child("All_Invites").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
             if snapshot.value is NSNull {
-//                print("my invites is null")
-//                self.soulArray.removeAll()
-//                var soulToShow = SoulData()
-//                soulToShow.invitee = "invitee: Empty"
-//                soulToShow.soulID = "soulID: Empty"
-//                soulToShow.firstName = " "
-//                soulToShow.lastName = " "
-//                soulToShow.address = "address: Empty"
-//                soulToShow.phoneNumber = "phoneNumber: Empty"
-//                soulToShow.eventContacted = "eventContacted: Empty"
-//                soulToShow.race = "race: Empty"
-//                soulToShow.sex = "sex: Empty"
-//                soulToShow.email = "email: Empty"
-//                soulToShow.school = "school: Empty"
-//                soulToShow.eventID = "eventId: Empty"
-//                soulToShow.OrgID = "orgId: Empty"
-//                self.soulArray.append(soulToShow)
-//                self.soulListTableView.reloadData()
+
             }
             else {
                 let soulsKey = snapshot.value as! [String : AnyObject]
@@ -366,6 +384,7 @@ class OrganizationHomeVC: UIViewController {
                         for (a,b) in allSoulsKey {
                             for each in self.mySoulsKey {
                                 var soulToShow = SoulData()
+                                var reorder = SoulData()
                                 if each == a {
                                     if let invitee = b["invitee"] as? String, let soulID = b["soulID"] as? String,  let firstName = b["firstName"] as? String,  let lastName = b["lastName"] as? String,  let phoneNumber = b["phoneNumber"] as? String,  let email = b["email"] as? String,  let school = b["school"] as? String,  let address = b["address"] as? String,  let eventContacted = b["eventContacted"] as? String,  let race = b["race"] as? String,  let sex = b["sex"] as? String ,  let orgId = b["orgId"] as? String,  let eventId = b["eventId"] as? String,  let ir = b["IR"] as? Double {
                                         soulToShow.invitee = invitee
@@ -384,6 +403,25 @@ class OrganizationHomeVC: UIViewController {
                                         soulToShow.ir = ir
                                         
                                     }
+                                    let dateFormatterss = DateFormatter()
+                                    dateFormatterss.dateFormat = "yyyy-MM-dd HH:mm:ss +zzzz"
+                                    if let recentString = b["recent"] as? String, let datess = dateFormatterss.date(from: recentString)  {
+                                        
+                                        
+                                        soulToShow.recent = datess
+                                    } else {
+                                       
+                                        let dateFormattersss = DateFormatter()
+                                        let dateFormatPringsss = DateFormatter()
+                                        dateFormattersss.dateFormat = "yyyy-MM-dd "
+                                        dateFormatPringsss.dateFormat = "MMM dd,yyyy hh:mm"
+                                        let dateStringsss = "12-1-1"
+                                        let datesss = dateFormattersss.date(from: dateStringsss)
+                                        
+                                        
+                                        soulToShow.recent = datesss
+                                    }
+                                    
                                     var notesToShow = SoulNotes()
                                     if let fnotes = b["Follow_Up_Notes"] as? [String:AnyObject] {
                                         for (c,d) in fnotes {
@@ -400,16 +438,51 @@ class OrganizationHomeVC: UIViewController {
                                                 notesToShow.notesKey = notesKey
                                                 soulToShow.followUpNotes.append(notesToShow)
                                             }
+                                            ////////////////////////////////////////////////////////////////
                                         }
-                                        soulToShow.followUpNotes.sort(by: { $0.date < $1.date })
                                     }
                                     
-                                    self.soulArray.append(soulToShow)
+                                    soulToShow.followUpNotes.sort(by: { $0.date < $1.date })
+                                    
+                                    if soulToShow.followUpNotes.count > 0 {
+                                        reorder.soulReorder = soulToShow.followUpNotes[0].date
+                                    }
+                                        if reorder.soulReorder == nil {
+                                            let dateFormatter = DateFormatter()
+                                            let dateFormatPring = DateFormatter()
+                                            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss +zzzz"
+                                            dateFormatPring.dateFormat = "MMM dd,yyyy"
+                                            let dateString = "12-1-1"
+                                            let dates = dateFormatter.date(from: dateString)
+                                            reorder.soulReorder = dates
+                                        }
+                                        soulToShow.soulReorder = reorder.soulReorder
+                                    
+                                    
+                                     self.soulArray.append(soulToShow)
+                                    
+                                    if self.soulArray[self.soulArray.count-1].soulReorder == nil {
+                                        let dateFormatter = DateFormatter()
+                                        let dateFormatPring = DateFormatter()
+                                        dateFormatter.dateFormat = "yyyy-MM-dd "
+                                        dateFormatPring.dateFormat = "MMM dd,yyyy"
+                                        let dateString = "12-1-1"
+                                        let dates = dateFormatter.date(from: dateString)
+                                        
+                                        self.soulArray[self.soulArray.count-1].soulReorder  = dates
+                                    }
+                                    
+                                   
                                 }
                             }
                         }
-                        self.soulArray.sort(by: { $0.firstName < $1.firstName })
+                        
+                        self.soulArrayInOrder = self.soulArray
+                        self.soulArrayInOrder.sort(by: { $0.firstName < $1.firstName })
+                        self.soulArray.sort(by: { $0.recent.compare($1.recent) == .orderedDescending })
+                        self.formatEmailMessage()
                         self.soulListTableView.reloadData()
+                        self.leaderRequestTableView.reloadData()
                     }
                     
                 })
@@ -425,17 +498,12 @@ class OrganizationHomeVC: UIViewController {
     
     @IBAction func urgencyToggle(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0{
-            orgIdTitle.text = "FollowApp"
-            orgIdTitle.font = UIFont(name: (orgIdTitle.font?.fontName)!, size: 21)
            eventsTableView.isHidden = false
            currentLeadersTableView.isHidden = true
             leaderRequestTableView.isHidden = true
              soulListTableView.isHidden = true 
             leaderSearchTableView.isHidden = true
-            finishMembersViewBtn.isHidden = true 
         } else if sender.selectedSegmentIndex == 1 {
-            orgIdTitle.text = "FollowApp"
-            orgIdTitle.font = UIFont(name: (orgIdTitle.font?.fontName)!, size: 21)
             // add new event
             creatNewGroup()
             sender.selectedSegmentIndex = 0
@@ -444,26 +512,28 @@ class OrganizationHomeVC: UIViewController {
             leaderRequestTableView.isHidden = true
             leaderSearchTableView.isHidden = true
              soulListTableView.isHidden = true
-            finishMembersViewBtn.isHidden = true 
         } else if sender.selectedSegmentIndex == 2 {
-            orgIdTitle.text = "FollowApp"
-            orgIdTitle.font = UIFont(name: (orgIdTitle.font?.fontName)!, size: 21)
             eventsTableView.isHidden = true
             currentLeadersTableView.isHidden = false
             leaderRequestTableView.isHidden = true
              soulListTableView.isHidden = true
             leaderSearchTableView.isHidden = true
-            finishMembersViewBtn.isHidden = true
         } else if sender.selectedSegmentIndex == 3 {
-             if orgVCData.OrgCreatorId == FIRAuth.auth()?.currentUser?.uid{
-                orgIdTitle.text = orgVCData.OrgId
-                orgIdTitle.font = UIFont(name: (orgIdTitle.font?.fontName)!, size: 11)
+            
+            eventsdropdown.isHidden = false
             eventsTableView.isHidden = true
             currentLeadersTableView.isHidden = true
             soulListTableView.isHidden = true
             leaderRequestTableView.isHidden = false
             leaderSearchTableView.isHidden = true
-            finishMembersViewBtn.isHidden = true
+            
+            /*
+             if orgVCData.OrgCreatorId == FIRAuth.auth()?.currentUser?.uid{
+            eventsTableView.isHidden = true
+            currentLeadersTableView.isHidden = true
+            soulListTableView.isHidden = true
+            leaderRequestTableView.isHidden = false
+            leaderSearchTableView.isHidden = true
              } else {
                 let alert = UIAlertController(title: "Sorry ", message: "🕺Cant Touch This🕺", preferredStyle: .alert)
                 
@@ -471,17 +541,14 @@ class OrganizationHomeVC: UIViewController {
                 
                 alert.addAction(cancel)
                 present(alert, animated: true, completion: nil)
-            }
+            } */
         } else if sender.selectedSegmentIndex == 4 {
             if orgVCData.OrgCreatorId == FIRAuth.auth()?.currentUser?.uid{
-                orgIdTitle.text = orgVCData.OrgId
-                orgIdTitle.font = UIFont(name: (orgIdTitle.font?.fontName)!, size: 11)
                 eventsTableView.isHidden = true
                 currentLeadersTableView.isHidden = true
                 soulListTableView.isHidden = true
                 leaderRequestTableView.isHidden = true
                 leaderSearchTableView.isHidden = false
-                finishMembersViewBtn.isHidden = false
                 searchBar.isHidden = false
                 sender.selectedSegmentIndex = 0
             } else {
@@ -495,27 +562,14 @@ class OrganizationHomeVC: UIViewController {
             
         } else if sender.selectedSegmentIndex == 5 {
             soulListTableView.isHidden = false
-            orgIdTitle.text = "FollowApp"
-            orgIdTitle.font = UIFont(name: (orgIdTitle.font?.fontName)!, size: 21)
             eventsTableView.isHidden = true
             currentLeadersTableView.isHidden = true
             leaderRequestTableView.isHidden = true
             leaderSearchTableView.isHidden = true
-            finishMembersViewBtn.isHidden = true
         }
     }
     
-    @IBAction func finishMembersViewPressed(_ sender: Any) {
-        finishMembersViewBtn.isHidden = true
-        orgIdTitle.text = "FollowApp"
-        orgIdTitle.font = UIFont(name: (orgIdTitle.font?.fontName)!, size: 21)
-        toggleBtn.selectedScopeButtonIndex = 0
-        leaderSearchTableView.isHidden = true
-        leaderSearchTableView.reloadData() 
-        searchBar.isHidden = true 
-        eventsTableView.isHidden = false
-        view.endEditing(true)
-    }
+
     
     @IBAction func refresh(_ sender: Any) {
         viewDidLoad()
@@ -530,6 +584,9 @@ class OrganizationHomeVC: UIViewController {
             vc.eventInfo.eventCreatorName = eventArray[(indexPath?.row)!].eventCreatorName
             vc.eventInfo.eventId = eventArray[(indexPath?.row)!].eventId
             vc.eventInfo.eventName = eventArray[(indexPath?.row)!].eventName
+            if eventArray[((indexPath?.row))!].attendanceArray.count > 0 {
+                vc.eventInfo.attendanceArray = eventArray[((indexPath?.row))!].attendanceArray
+            }
             vc.eventInfo.eventGroupId = orgVCData.OrgId
             vc.eventInfo.eventGroup = orgVCData.OrgTitle
             vc.eventArray = self.eventArray
@@ -551,7 +608,7 @@ extension OrganizationHomeVC: UITableViewDataSource , UITableViewDelegate,  UISe
                 return 0
             }
         } else if (tableView == leaderRequestTableView){
-            return pendingLeadersArray.count
+            return soulArrayInOrder.count
         } else if tableView == delTableView {
             return allSoulAr.count
         } else if tableView == soulListTableView {
@@ -607,8 +664,8 @@ extension OrganizationHomeVC: UITableViewDataSource , UITableViewDelegate,  UISe
             return cell
         } else {
             var cell =  tableView.dequeueReusableCell(withIdentifier: "pendingLeaders", for: indexPath) as! LeaderCell
-            cell.pendingLeaderName.text = self.pendingLeadersArray[indexPath.row].fullName
-            cell.pendingLeaderEmail.text = self.pendingLeadersArray[indexPath.row].email
+            cell.pendingLeaderName.text = self.soulArrayInOrder[indexPath.row].firstName + " " +  self.soulArrayInOrder[indexPath.row].lastName
+            cell.pendingLeaderEmail.text = self.soulArrayInOrder[indexPath.row].invitee
             return cell 
         }
     }
@@ -802,6 +859,22 @@ extension OrganizationHomeVC: UITableViewDataSource , UITableViewDelegate,  UISe
                 
             }
         } else if tableView == leaderRequestTableView {
+            
+            // add to the selected group
+            let ref = FIRDatabase.database().reference()
+            
+            let prayers = [ "\(self.soulArrayInOrder[indexPath.row].soulID ?? "")" :"\(self.soulArrayInOrder[indexPath.row].soulID ?? "")"] // var inviteeID: String!
+            
+            
+            ref.child("Organizations").child(self.orgVCData.OrgId!).child("Events").child(self.eventsIdToAdd!).child("invites").updateChildValues(prayers)
+            //            let indexPath = tableView.indexPathForSelectedRow
+            let backgroundView = UIView()
+            backgroundView.backgroundColor = UIColor.green
+            // cell.selectedBackgroundView = backgroundView
+            self.leaderRequestTableView.cellForRow(at: indexPath)?.selectedBackgroundView = backgroundView
+            
+            
+            /*
             let uid = FIRAuth.auth()!.currentUser!.uid
             let ref = FIRDatabase.database().reference()
             let key = ref.child("leaders").childByAutoId().key
@@ -844,7 +917,7 @@ extension OrganizationHomeVC: UITableViewDataSource , UITableViewDelegate,  UISe
 
             })
             ref.removeAllObservers()
-            
+          */
         } else {
             //
         }
@@ -922,6 +995,130 @@ extension OrganizationHomeVC: UITableViewDataSource , UITableViewDelegate,  UISe
             present(alert, animated: true, completion: nil)
             
         }
+    }
+    
+    func formatEmailMessage(){
+        self.emailString = "----Souls For \(orgVCData.OrgTitle ?? "")----\n "
+        if soulArrayInOrder.count > 0 {
+        for x in 0...soulArrayInOrder.count - 1 {
+            self.emailString += "\nSoul \(x+1) \n"
+            self.emailString += "\t Full Name: "
+            self.emailString += soulArrayInOrder[x].firstName + " " + soulArrayInOrder[x].lastName
+            self.emailString += "\n\t Phone Number: "
+            self.emailString += soulArrayInOrder[x].phoneNumber
+            self.emailString += "\n\t Email: "
+            self.emailString += soulArrayInOrder[x].email
+            self.emailString += "\n\t Event Met: "
+            self.emailString += soulArrayInOrder[x].eventContacted
+            self.emailString += "\n\t Invitee: "
+            self.emailString += soulArrayInOrder[x].invitee
+            self.emailString += "\n\t Race: "
+            self.emailString += soulArrayInOrder[x].race
+            self.emailString += "\n\t Gender: "
+            self.emailString += soulArrayInOrder[x].sex
+            self.emailString += "\n\t Interest Rate: "
+            self.emailString += "\(soulArrayInOrder[x].ir ?? 0.0)\n"
+        }
+        
+        self.emailString += "=== You have \(soulArrayInOrder.count) Total amount of souls in this cell"
+            self.saveFile()
+        } else {
+            //self.emailString += "Sorry this group has no souls yet"
+        }
+    }
+    
+    ///// Send Message of All Soul Data
+    @IBAction func sendEmail(_ sender: Any) {
+        let mail = configureMailViewCOntroller()
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mail, animated: true, completion: nil)
+        } else {
+            showMailError()
+        }
+    }
+    
+    func configureMailViewCOntroller() -> MFMailComposeViewController {
+        let mailControllerVC = MFMailComposeViewController()
+        mailControllerVC.mailComposeDelegate = self
+        
+        mailControllerVC.setToRecipients([])
+        mailControllerVC.setSubject("\(orgVCData.OrgTitle ?? " ") Souls")
+        mailControllerVC.setMessageBody("\(emailFile)", isHTML: false)
+        return mailControllerVC
+    }
+    
+    func showMailError(){
+        let sendMailError = UIAlertController(title: "error", message: "Mail not sent", preferredStyle: .alert)
+        let dismiss = UIAlertAction(title: "ok", style: .default, handler: nil)
+        sendMailError.addAction(dismiss)
+        self.present(sendMailError, animated: true, completion: nil)
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+    
+    func saveFile(){
+        // Save data to file
+        let fileName = "Test2"
+        let DocumentDirURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+        
+        let fileURL = DocumentDirURL.appendingPathComponent(fileName).appendingPathExtension("txt")
+        //        print("FilePath: \(fileURL.path)")
+        
+        let writeString = "\(emailString )"
+        do {
+            // Write to the file
+            try writeString.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
+        } catch let error as NSError {
+            //            print("Failed writing to URL: \(fileURL), Error: " + error.localizedDescription)
+        }
+        
+        var readString = "" // Used to store the file contents
+        do {
+            // Read the file contents
+            emailFile = try String(contentsOf: fileURL)
+        } catch let error as NSError {
+            print("Failed reading from URL: \(fileURL), Error: " + error.localizedDescription)
+        }
+        print("File Text: \(emailFile)")
+    }
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        
+        return  1
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        return eventArray.count
+        
+    }
+    
+    
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        eventsdropdown.isHidden = true
+        
+        if eventArray.count > 0 {
+            self.pageTitle.text = eventArray[row].eventName
+            self.orgCreatorLbl.text = "Copy to"
+            eventsIdToAdd = eventArray[row].eventId
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        
+        return eventArray[row].eventName
+        
+    }
+    
+    @IBAction func backPressed(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+        
     }
 }
 
