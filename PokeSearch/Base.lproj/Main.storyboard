@@ -712,6 +712,7 @@
                                 <items>
                                     <navigationItem title="FollowAp" id="mHA-ib-7Ij">
                                         <barButtonItem key="leftBarButtonItem" systemItem="reply" id="oZy-tR-Oea">
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
                                                 <action selector="backPressed:" destination="Id8-sR-9bM" id="AXI-tw-S8z"/>
                                             </connections>
@@ -724,7 +725,7 @@
                                                 </connections>
                                             </barButtonItem>
                                             <barButtonItem systemItem="action" id="OPu-7J-FKJ">
-                                                <color key="tintColor" red="0.090276591480000001" green="0.18378466369999999" blue="0.22559061650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <action selector="sendEmail:" destination="Id8-sR-9bM" id="s6e-jh-6Xq"/>
                                                 </connections>
@@ -1090,7 +1091,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="888-888-8888" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v5O-L8-h9y" customClass="RoundTextField" customModule="PokeSearch" customModuleProvider="target">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="888 888 888" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v5O-L8-h9y" customClass="RoundTextField" customModule="PokeSearch" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="31" width="149" height="21"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1308,11 +1309,13 @@
                                 <items>
                                     <navigationItem title="FollowAp" id="5J0-EH-KLm">
                                         <barButtonItem key="leftBarButtonItem" systemItem="reply" id="Vpp-NU-40I">
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
                                                 <action selector="backPressed:" destination="gZM-UG-iYG" id="iEp-ya-s5e"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="QKg-yr-e4E">
+                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <connections>
                                                 <action selector="refresh:" destination="gZM-UG-iYG" id="qm3-hQ-7A1"/>
                                             </connections>
@@ -2525,7 +2528,7 @@
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rdT-Xg-7HR">
                                 <rect key="frame" x="0.0" y="30" width="375" height="44"/>
                                 <items>
-                                    <navigationItem title="Title" id="Mk3-m4-mCu">
+                                    <navigationItem title="FollowAp" id="Mk3-m4-mCu">
                                         <leftBarButtonItems>
                                             <barButtonItem style="plain" systemItem="reply" id="OGw-Xf-oxi">
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2538,30 +2541,10 @@
                                             </barButtonItem>
                                         </leftBarButtonItems>
                                         <rightBarButtonItems>
-                                            <barButtonItem title="Call📞" style="plain" id="EZQ-5d-tEw">
-                                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0RY-Ai-zs0">
-                                                    <rect key="frame" x="276" y="7" width="83" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="call ">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="call:" destination="EFk-Y0-EDZ" eventType="touchUpInside" id="VHr-Y1-Fwa"/>
-                                                    </connections>
-                                                </button>
+                                            <barButtonItem title="📞" style="plain" id="EZQ-5d-tEw">
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </barButtonItem>
-                                            <barButtonItem title="text" style="plain" id="73C-ea-HDk">
-                                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="et7-fa-gby">
-                                                    <rect key="frame" x="185" y="7" width="83" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Text">
-                                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="sendMessage:" destination="EFk-Y0-EDZ" eventType="touchUpInside" id="M2P-BX-sq1"/>
-                                                    </connections>
-                                                </button>
+                                            <barButtonItem style="plain" systemItem="compose" id="73C-ea-HDk">
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </barButtonItem>
                                         </rightBarButtonItems>
@@ -3002,7 +2985,7 @@
                                 <items>
                                     <navigationItem title="FollowAp" id="rx4-Ie-8qY">
                                         <leftBarButtonItems>
-                                            <barButtonItem title="Back" id="cDA-wJ-iO8">
+                                            <barButtonItem systemItem="reply" id="cDA-wJ-iO8">
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <action selector="backPressed:" destination="DS0-X4-Vmj" id="kVq-nN-1IY"/>
@@ -3016,13 +2999,13 @@
                                             </barButtonItem>
                                         </leftBarButtonItems>
                                         <rightBarButtonItems>
-                                            <barButtonItem title="Call" id="sSj-lv-r5u">
+                                            <barButtonItem title="📞" id="sSj-lv-r5u">
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <action selector="call:" destination="DS0-X4-Vmj" id="mrP-Gj-t2G"/>
                                                 </connections>
                                             </barButtonItem>
-                                            <barButtonItem title="Text" id="gT9-cj-R3l">
+                                            <barButtonItem systemItem="compose" id="gT9-cj-R3l">
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <connections>
                                                     <action selector="sendMessage:" destination="DS0-X4-Vmj" id="zxc-n9-9zm"/>
