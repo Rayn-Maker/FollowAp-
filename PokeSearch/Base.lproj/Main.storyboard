@@ -98,7 +98,7 @@
                                 <rect key="frame" x="0.0" y="165" width="375" height="515"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="joinOrgCell" rowHeight="83" id="SSI-v5-gIN" customClass="OrganizationCell" customModule="PokeSearch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="joinOrgCell" rowHeight="83" id="SSI-v5-gIN" customClass="OrganizationCell" customModule="PokeSearch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SSI-v5-gIN" id="OQF-fx-f2v">
@@ -223,7 +223,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" alpha="0.75" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OdG-EO-aMt" userLabel="Chosen Organization List">
-                                <rect key="frame" x="0.0" y="339" width="375" height="328"/>
+                                <rect key="frame" x="0.0" y="340" width="375" height="327"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="organizationCell" id="Ocy-PW-aW5" customClass="OrganizationCell" customModule="PokeSearch" customModuleProvider="target">
@@ -241,16 +241,20 @@
                                 </connections>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Urm-9P-tw4">
-                                <rect key="frame" x="39" y="135" width="297" height="132"/>
+                                <rect key="frame" x="39" y="118" width="297" height="150"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fc2-C1-o4B">
-                                        <rect key="frame" x="0.0" y="0.0" width="184" height="132"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="148" height="150"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="9O3-tr-RP6"/>
+                                            <constraint firstAttribute="width" constant="148" id="WJb-A5-Jw3"/>
+                                        </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="fZx-z7-x9c">
-                                        <rect key="frame" x="199" y="0.0" width="98" height="132"/>
+                                        <rect key="frame" x="163" y="0.0" width="134" height="150"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BeF-MU-NWh" userLabel="view my invites" customClass="RoundedButton" customModule="PokeSearch" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="98" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="134" height="26"/>
                                                 <state key="normal" title="My Invites">
                                                     <color key="titleColor" red="0.98546557739999996" green="0.98546557739999996" blue="0.98546557739999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
@@ -270,10 +274,10 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iYZ-kg-LTX" userLabel="join org" customClass="RoundedButton" customModule="PokeSearch" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="49" width="98" height="34"/>
+                                                <rect key="frame" x="0.0" y="41" width="134" height="26.5"/>
                                                 <state key="normal">
                                                     <attributedString key="attributedTitle">
-                                                        <fragment content="Join Church">
+                                                        <fragment content="Switch Zone">
                                                             <attributes>
                                                                 <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <font key="NSFont" size="18" name=".SFNSText"/>
@@ -294,11 +298,25 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <segue destination="mYN-PO-jEZ" kind="show" id="AzI-d2-PHn"/>
+                                                    <action selector="switchZonesPressed:" destination="0W6-yK-iko" eventType="touchUpInside" id="Ltq-6R-OPR"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vdA-hY-yGY" customClass="RoundedButton" customModule="PokeSearch" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="82.5" width="134" height="26"/>
+                                                <state key="normal" title="Switch Church">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="switchChurchPresd:" destination="0W6-yK-iko" eventType="touchUpInside" id="Ayl-yF-eRr"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bnD-Yt-63h" customClass="RoundedButton" customModule="PokeSearch" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="98" width="98" height="34"/>
+                                                <rect key="frame" x="0.0" y="123.5" width="134" height="26.5"/>
                                                 <state key="normal" title="✙ Cell">
                                                     <color key="titleColor" red="0.98546557739999996" green="0.98546557739999996" blue="0.98546557739999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
@@ -325,7 +343,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author's Name" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DnM-ru-diz">
-                                <rect key="frame" x="16" y="284" width="332" height="47"/>
+                                <rect key="frame" x="16" y="285" width="332" height="47"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="UKm-ff-CAa"/>
                                 </constraints>
@@ -337,7 +355,7 @@
                                 </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Churches" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gtm-LQ-SwB">
-                                <rect key="frame" x="65" y="82" width="245" height="21"/>
+                                <rect key="frame" x="65" y="83" width="245" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -346,7 +364,7 @@
                                 </variation>
                             </label>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OVE-Ke-aRO">
-                                <rect key="frame" x="0.0" y="30" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="30" width="375" height="45"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <navigationItem title="FollowAp" id="bo5-uF-1z4">
@@ -368,7 +386,7 @@
                                 </items>
                             </navigationBar>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="kuU-jQ-KkQ">
-                                <rect key="frame" x="113" y="183" width="37" height="37"/>
+                                <rect key="frame" x="94.5" y="175" width="37" height="37"/>
                                 <color key="color" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fab-YS-7LN">
@@ -378,9 +396,35 @@
                                     <constraint firstAttribute="height" constant="30" id="3d9-AJ-1o6"/>
                                 </constraints>
                             </view>
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RpV-75-azp" userLabel="churchDpDn">
+                                <rect key="frame" x="153" y="231" width="222" height="234"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="234" id="YMh-MV-tpc"/>
+                                    <constraint firstAttribute="width" constant="222" id="kir-Va-Uqc"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="0W6-yK-iko" id="Wuq-Ab-7su"/>
+                                    <outlet property="delegate" destination="0W6-yK-iko" id="0oS-av-wA2"/>
+                                </connections>
+                            </pickerView>
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Mz-pz-ihU" userLabel="zoneDpDn">
+                                <rect key="frame" x="157" y="194" width="218" height="232"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="232" id="Bhs-l0-VcC"/>
+                                    <constraint firstAttribute="width" constant="218" id="HRW-3m-h3R"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="0W6-yK-iko" id="hrn-5h-qvd"/>
+                                    <outlet property="delegate" destination="0W6-yK-iko" id="Yy8-ju-l16"/>
+                                </connections>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" red="0.090276591480000001" green="0.18378466369999999" blue="0.22559061650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="1Mz-pz-ihU" firstAttribute="top" secondItem="iYZ-kg-LTX" secondAttribute="bottom" constant="8.5" id="0Dd-cd-cIz"/>
+                            <constraint firstAttribute="trailing" secondItem="RpV-75-azp" secondAttribute="trailing" id="11C-fp-Rzc"/>
                             <constraint firstItem="DnM-ru-diz" firstAttribute="leading" secondItem="At9-aS-S12" secondAttribute="leading" constant="16" id="32U-eT-wR1"/>
                             <constraint firstItem="bpe-5O-Cb3" firstAttribute="top" secondItem="OdG-EO-aMt" secondAttribute="bottom" id="5gj-ag-PBC"/>
                             <constraint firstItem="kuU-jQ-KkQ" firstAttribute="centerX" secondItem="Fc2-C1-o4B" secondAttribute="centerX" id="81K-Tq-x3H"/>
@@ -389,8 +433,13 @@
                             <constraint firstItem="Gtm-LQ-SwB" firstAttribute="centerX" secondItem="OVE-Ke-aRO" secondAttribute="centerX" id="DvT-ca-7rj"/>
                             <constraint firstItem="OVE-Ke-aRO" firstAttribute="leading" secondItem="At9-aS-S12" secondAttribute="leading" id="Etw-Ap-Cnc"/>
                             <constraint firstItem="OdG-EO-aMt" firstAttribute="top" secondItem="DnM-ru-diz" secondAttribute="bottom" constant="8" id="GHu-k5-pg8"/>
+                            <constraint firstItem="1Mz-pz-ihU" firstAttribute="leading" secondItem="At9-aS-S12" secondAttribute="leading" constant="157" id="I3s-ci-3Gf"/>
                             <constraint firstItem="Urm-9P-tw4" firstAttribute="centerX" secondItem="At9-aS-S12" secondAttribute="centerX" id="IQ8-0S-GFV"/>
+                            <constraint firstItem="RpV-75-azp" firstAttribute="top" secondItem="vdA-hY-yGY" secondAttribute="bottom" constant="5" id="Ibj-xR-rUf"/>
+                            <constraint firstItem="RpV-75-azp" firstAttribute="leading" secondItem="At9-aS-S12" secondAttribute="leading" constant="153" id="W88-pF-cAT"/>
+                            <constraint firstAttribute="trailing" secondItem="1Mz-pz-ihU" secondAttribute="trailing" id="aSx-M5-Cmu"/>
                             <constraint firstAttribute="trailing" secondItem="OVE-Ke-aRO" secondAttribute="trailing" id="bE5-Gy-LCV"/>
+                            <constraint firstItem="bpe-5O-Cb3" firstAttribute="top" secondItem="RpV-75-azp" secondAttribute="bottom" constant="202" id="bOG-X8-LzO"/>
                             <constraint firstItem="OdG-EO-aMt" firstAttribute="leading" secondItem="At9-aS-S12" secondAttribute="leading" id="dgU-Pj-c3o"/>
                             <constraint firstAttribute="trailing" secondItem="Fab-YS-7LN" secondAttribute="trailing" id="eEt-iE-axh"/>
                             <constraint firstItem="DnM-ru-diz" firstAttribute="top" secondItem="OVE-Ke-aRO" secondAttribute="bottom" constant="210" id="fYw-TZ-OiO"/>
@@ -398,7 +447,7 @@
                             <constraint firstItem="DnM-ru-diz" firstAttribute="top" secondItem="Urm-9P-tw4" secondAttribute="bottom" constant="17" id="kei-jb-JCJ"/>
                             <constraint firstItem="Gtm-LQ-SwB" firstAttribute="top" secondItem="OVE-Ke-aRO" secondAttribute="bottom" constant="8" id="kiU-fO-QFH"/>
                             <constraint firstItem="OVE-Ke-aRO" firstAttribute="top" secondItem="Fab-YS-7LN" secondAttribute="bottom" id="lcd-sf-Ms6"/>
-                            <constraint firstItem="Urm-9P-tw4" firstAttribute="top" secondItem="Gtm-LQ-SwB" secondAttribute="bottom" constant="32.5" id="q75-Yg-khi"/>
+                            <constraint firstItem="Urm-9P-tw4" firstAttribute="top" secondItem="Gtm-LQ-SwB" secondAttribute="bottom" constant="2" id="q75-Yg-khi"/>
                             <constraint firstItem="kuU-jQ-KkQ" firstAttribute="centerY" secondItem="Fc2-C1-o4B" secondAttribute="centerY" id="t63-ZV-yHh"/>
                             <constraint firstAttribute="trailing" secondItem="OdG-EO-aMt" secondAttribute="trailing" id="t7J-B7-yvL"/>
                             <constraint firstAttribute="trailing" secondItem="Urm-9P-tw4" secondAttribute="trailing" constant="39" id="vye-dl-cSH"/>
@@ -426,9 +475,11 @@
                     <connections>
                         <outlet property="activitySpinner" destination="kuU-jQ-KkQ" id="7Jf-K8-uai"/>
                         <outlet property="authorsLbl" destination="DnM-ru-diz" id="Nhn-PP-Kr0"/>
+                        <outlet property="churchDpDn" destination="RpV-75-azp" id="Sp0-7s-bjL"/>
                         <outlet property="churchNames" destination="Gtm-LQ-SwB" id="2fD-97-Bws"/>
                         <outlet property="leaderPicture" destination="Fc2-C1-o4B" id="idQ-tj-ygf"/>
                         <outlet property="orgsListTableView" destination="OdG-EO-aMt" id="8Ae-DB-CjN"/>
+                        <outlet property="zoneDpDn" destination="1Mz-pz-ihU" id="7wO-l5-O1g"/>
                         <segue destination="Id8-sR-9bM" kind="presentation" identifier="groupListToGroupView" modalTransitionStyle="crossDissolve" id="ift-oW-gVs"/>
                         <segue destination="mYN-PO-jEZ" kind="modal" identifier="orgList" modalTransitionStyle="coverVertical" id="OwH-Do-qMO"/>
                         <segue destination="Kld-Gt-5Z4" kind="show" identifier="signout" id="Xrv-rj-rnS"/>
@@ -488,9 +539,8 @@
                                     <outlet property="delegate" destination="Id8-sR-9bM" id="kBH-h3-ODt"/>
                                 </connections>
                             </tableView>
-                            <tableView hidden="YES" clipsSubviews="YES" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="83" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="x5o-zy-oG6" userLabel="List of leaders">
+                            <tableView hidden="YES" clipsSubviews="YES" alpha="0.75" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="83" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="x5o-zy-oG6" userLabel="List of leaders">
                                 <rect key="frame" x="0.0" y="354" width="375" height="313"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="currentLeadersCell" rowHeight="83" id="AJy-DS-yAo" customClass="LeaderCell" customModule="PokeSearch" customModuleProvider="target">
@@ -532,9 +582,8 @@
                                     <outlet property="delegate" destination="Id8-sR-9bM" id="re4-rj-eVv"/>
                                 </connections>
                             </tableView>
-                            <tableView clipsSubviews="YES" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="s9c-V0-Xcv" userLabel="List of Events">
+                            <tableView clipsSubviews="YES" alpha="0.75" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="73" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="s9c-V0-Xcv" userLabel="List of Events">
                                 <rect key="frame" x="0.0" y="354" width="375" height="313"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" alpha="0.75" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="eventsCell" rowHeight="73" id="ssU-FO-PRo" customClass="EventCell" customModule="PokeSearch" customModuleProvider="target">
@@ -588,7 +637,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L6l-EC-bcc" id="oJ1-6F-yHt">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -613,6 +662,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="FbW-is-LTz"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Organization Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qnb-lu-aeK">
                                 <rect key="frame" x="16" y="88" width="343" height="60"/>
@@ -622,6 +676,11 @@
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="25"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="qg0-ta-Zn3"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="followAppPp" translatesAutoresizingMaskIntoConstraints="NO" id="cxj-58-rUF">
                                 <rect key="frame" x="92" y="196" width="190" height="114"/>
@@ -629,6 +688,12 @@
                                     <constraint firstAttribute="width" constant="190" id="4v1-Re-LHY"/>
                                     <constraint firstAttribute="height" constant="114" id="Sfa-Gz-O8C"/>
                                 </constraints>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="4v1-Re-LHY"/>
+                                        <exclude reference="Sfa-Gz-O8C"/>
+                                    </mask>
+                                </variation>
                             </imageView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="h0F-H4-dQP">
                                 <rect key="frame" x="0.0" y="325" width="375" height="29"/>
@@ -709,14 +774,25 @@
                             </tableView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MSJ-wq-W4I">
                                 <rect key="frame" x="0.0" y="30" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Z9R-g3-4Vc"/>
+                                </constraints>
                                 <items>
                                     <navigationItem title="FollowAp" id="mHA-ib-7Ij">
-                                        <barButtonItem key="leftBarButtonItem" systemItem="reply" id="oZy-tR-Oea">
-                                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <connections>
-                                                <action selector="backPressed:" destination="Id8-sR-9bM" id="AXI-tw-S8z"/>
-                                            </connections>
-                                        </barButtonItem>
+                                        <leftBarButtonItems>
+                                            <barButtonItem systemItem="reply" id="oZy-tR-Oea">
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="backPressed:" destination="Id8-sR-9bM" id="AXI-tw-S8z"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem style="plain" systemItem="done" id="mUU-W1-4pV">
+                                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <connections>
+                                                    <action selector="donewithSearch:" destination="Id8-sR-9bM" id="keJ-86-7ft"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </leftBarButtonItems>
                                         <rightBarButtonItems>
                                             <barButtonItem systemItem="refresh" id="fJw-uL-GjJ">
                                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -740,6 +816,11 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="E0s-mZ-dRG"/>
                                 </constraints>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="E0s-mZ-dRG"/>
+                                    </mask>
+                                </variation>
                             </view>
                             <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qFu-9K-kk8">
                                 <rect key="frame" x="0.0" y="229" width="375" height="185"/>
@@ -748,6 +829,11 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="185" id="Jys-ey-Pff"/>
                                 </constraints>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <exclude reference="Jys-ey-Pff"/>
+                                    </mask>
+                                </variation>
                                 <connections>
                                     <outlet property="dataSource" destination="Id8-sR-9bM" id="woi-I3-Euf"/>
                                     <outlet property="delegate" destination="Id8-sR-9bM" id="UAa-SG-Zcg"/>
@@ -757,13 +843,16 @@
                         <color key="backgroundColor" red="0.090276591480000001" green="0.18378466369999999" blue="0.22559061650000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="cxj-58-rUF" secondAttribute="trailing" constant="93" id="1Wk-gv-DZF"/>
+                            <constraint firstItem="x5o-zy-oG6" firstAttribute="top" secondItem="h0F-H4-dQP" secondAttribute="bottom" constant="1" id="333-SJ-M1N"/>
                             <constraint firstAttribute="trailing" secondItem="h0F-H4-dQP" secondAttribute="trailing" id="3YZ-Kp-m8k"/>
                             <constraint firstItem="qFu-9K-kk8" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leading" id="5yw-l3-WmY"/>
                             <constraint firstItem="h0F-H4-dQP" firstAttribute="top" secondItem="cxj-58-rUF" secondAttribute="bottom" constant="15" id="66H-yY-UYg"/>
                             <constraint firstItem="Wec-Qx-SEo" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leading" constant="16" id="7oB-Ls-4EK"/>
                             <constraint firstItem="LXP-Ek-8E5" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leading" id="8dG-Jg-Gh9"/>
                             <constraint firstItem="cxj-58-rUF" firstAttribute="top" secondItem="Wec-Qx-SEo" secondAttribute="bottom" constant="8" id="9Jg-0o-FIy"/>
+                            <constraint firstItem="I7J-mA-TH7" firstAttribute="top" secondItem="s9c-V0-Xcv" secondAttribute="bottom" id="BKI-lL-9cD"/>
                             <constraint firstItem="MSJ-wq-W4I" firstAttribute="top" secondItem="Dxv-SP-nYB" secondAttribute="bottom" id="C87-2f-0kF"/>
+                            <constraint firstItem="s9c-V0-Xcv" firstAttribute="top" secondItem="h0F-H4-dQP" secondAttribute="bottom" constant="1" id="C90-tm-FeR"/>
                             <constraint firstItem="cxj-58-rUF" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leading" constant="92" id="Cq2-dm-oYi"/>
                             <constraint firstAttribute="trailing" secondItem="qFu-9K-kk8" secondAttribute="trailing" id="DnO-qb-BE2"/>
                             <constraint firstAttribute="trailing" secondItem="LXP-Ek-8E5" secondAttribute="trailing" id="ETB-aE-MOi"/>
@@ -771,9 +860,13 @@
                             <constraint firstItem="AEP-EW-srf" firstAttribute="top" secondItem="h0F-H4-dQP" secondAttribute="bottom" constant="1" id="HWe-jL-sah"/>
                             <constraint firstAttribute="trailing" secondItem="AEP-EW-srf" secondAttribute="trailing" id="HjR-gA-JYI"/>
                             <constraint firstItem="cxj-58-rUF" firstAttribute="centerX" secondItem="hsI-F4-JXp" secondAttribute="centerX" id="IW5-nD-NY9"/>
+                            <constraint firstAttribute="trailing" secondItem="s9c-V0-Xcv" secondAttribute="trailing" id="J4J-yZ-8gc"/>
                             <constraint firstItem="MSJ-wq-W4I" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leading" id="J5b-zv-loV"/>
                             <constraint firstAttribute="trailing" secondItem="gvL-nz-ayP" secondAttribute="trailing" id="Jp1-zN-dB1"/>
                             <constraint firstItem="Qnb-lu-aeK" firstAttribute="top" secondItem="MSJ-wq-W4I" secondAttribute="bottom" constant="14" id="Jul-uq-EQ6"/>
+                            <constraint firstItem="I7J-mA-TH7" firstAttribute="top" secondItem="x5o-zy-oG6" secondAttribute="bottom" id="KiW-37-s0l"/>
+                            <constraint firstItem="x5o-zy-oG6" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leading" id="OlB-Lw-IKh"/>
+                            <constraint firstAttribute="trailing" secondItem="x5o-zy-oG6" secondAttribute="trailing" id="Pg9-9o-bAY"/>
                             <constraint firstItem="I7J-mA-TH7" firstAttribute="top" secondItem="LXP-Ek-8E5" secondAttribute="bottom" id="ZGc-PN-Nsm"/>
                             <constraint firstItem="Qnb-lu-aeK" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leadingMargin" id="ZtI-Ch-BT2"/>
                             <constraint firstItem="Wec-Qx-SEo" firstAttribute="top" secondItem="Qnb-lu-aeK" secondAttribute="bottom" constant="-5" id="a7i-Fj-CAt"/>
@@ -789,6 +882,7 @@
                             <constraint firstItem="Dxv-SP-nYB" firstAttribute="centerX" secondItem="hsI-F4-JXp" secondAttribute="centerX" id="h9K-qh-9KH"/>
                             <constraint firstItem="I7J-mA-TH7" firstAttribute="top" secondItem="AEP-EW-srf" secondAttribute="bottom" id="hPW-oG-d31"/>
                             <constraint firstItem="Dxv-SP-nYB" firstAttribute="top" secondItem="hsI-F4-JXp" secondAttribute="top" id="iwW-DF-lSp"/>
+                            <constraint firstItem="s9c-V0-Xcv" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leading" id="iyP-EE-BCm"/>
                             <constraint firstAttribute="trailing" secondItem="Dxv-SP-nYB" secondAttribute="trailing" id="jSX-CO-OUQ"/>
                             <constraint firstItem="5Mf-Fl-zn4" firstAttribute="leading" secondItem="hsI-F4-JXp" secondAttribute="leading" id="l0C-hS-Ya3"/>
                             <constraint firstAttribute="trailing" secondItem="MSJ-wq-W4I" secondAttribute="trailing" id="oyR-bk-DUf"/>
@@ -814,6 +908,47 @@
                                 <include reference="gvL-nz-ayP"/>
                                 <include reference="AEP-EW-srf"/>
                                 <include reference="LXP-Ek-8E5"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="h9K-qh-9KH"/>
+                                <exclude reference="iwW-DF-lSp"/>
+                                <exclude reference="jSX-CO-OUQ"/>
+                                <exclude reference="qLb-Nz-RL5"/>
+                                <exclude reference="C87-2f-0kF"/>
+                                <exclude reference="J5b-zv-loV"/>
+                                <exclude reference="oyR-bk-DUf"/>
+                                <exclude reference="Jp1-zN-dB1"/>
+                                <exclude reference="gTW-gF-tlV"/>
+                                <exclude reference="zhh-Cv-Z4X"/>
+                                <exclude reference="Jul-uq-EQ6"/>
+                                <exclude reference="ZtI-Ch-BT2"/>
+                                <exclude reference="c9N-mo-guJ"/>
+                                <exclude reference="8dG-Jg-Gh9"/>
+                                <exclude reference="ETB-aE-MOi"/>
+                                <exclude reference="e1C-eF-xHo"/>
+                                <exclude reference="7oB-Ls-4EK"/>
+                                <exclude reference="a7i-Fj-CAt"/>
+                                <exclude reference="cKH-pX-gEk"/>
+                                <exclude reference="1Wk-gv-DZF"/>
+                                <exclude reference="9Jg-0o-FIy"/>
+                                <exclude reference="Cq2-dm-oYi"/>
+                                <exclude reference="IW5-nD-NY9"/>
+                                <exclude reference="5yw-l3-WmY"/>
+                                <exclude reference="DnO-qb-BE2"/>
+                                <exclude reference="h1j-rt-oKL"/>
+                                <exclude reference="3YZ-Kp-m8k"/>
+                                <exclude reference="66H-yY-UYg"/>
+                                <exclude reference="ciP-PE-Wih"/>
+                                <exclude reference="F2B-lj-Roz"/>
+                                <exclude reference="eFN-4v-cRI"/>
+                                <exclude reference="l0C-hS-Ya3"/>
+                                <exclude reference="HWe-jL-sah"/>
+                                <exclude reference="HjR-gA-JYI"/>
+                                <exclude reference="ynN-mB-2xw"/>
+                                <exclude reference="ZGc-PN-Nsm"/>
+                                <exclude reference="apQ-gn-enK"/>
+                                <exclude reference="cPY-bJ-iag"/>
+                                <exclude reference="hPW-oG-d31"/>
                             </mask>
                         </variation>
                     </view>
@@ -935,7 +1070,7 @@
                                 <rect key="frame" x="0.0" y="278" width="375" height="389"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="soulsCell" rowHeight="107" id="Zt1-LL-AdH" customClass="SoulDataCell" customModule="PokeSearch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="gray" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="soulsCell" rowHeight="107" id="Zt1-LL-AdH" customClass="SoulDataCell" customModule="PokeSearch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="107"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zt1-LL-AdH" id="vaX-uN-9X2">
@@ -1007,7 +1142,7 @@
                                 <rect key="frame" x="0.0" y="278" width="375" height="389"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="soulToAddCell" rowHeight="102" id="CQ1-jd-Rri">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="soulToAddCell" rowHeight="102" id="CQ1-jd-Rri">
                                         <rect key="frame" x="0.0" y="28" width="375" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CQ1-jd-Rri" id="yWT-Ds-NU6">
@@ -1474,7 +1609,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="soulMaintenance" id="esJ-Bi-1bb">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="soulMaintenance" id="esJ-Bi-1bb">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="esJ-Bi-1bb" id="xPJ-BO-JNW">
@@ -1798,7 +1933,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="leadersMaintenance" id="ggQ-g2-bQD">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="leadersMaintenance" id="ggQ-g2-bQD">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ggQ-g2-bQD" id="y2T-7u-Q9Z">
@@ -1865,7 +2000,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="organizationCell2" id="Wzf-9Q-lsp">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="organizationCell2" id="Wzf-9Q-lsp">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Wzf-9Q-lsp" id="K4h-08-sgw">
@@ -2147,7 +2282,7 @@
                                 <rect key="frame" x="0.0" y="301" width="375" height="366"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="followUpNotes" rowHeight="101" id="Mbu-3m-Lhm" customClass="SoulDataCell" customModule="PokeSearch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="followUpNotes" rowHeight="101" id="Mbu-3m-Lhm" customClass="SoulDataCell" customModule="PokeSearch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="101"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mbu-3m-Lhm" id="Ya3-6Q-tBR">
@@ -2615,7 +2750,7 @@
                                 <rect key="frame" x="0.0" y="206" width="375" height="461"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mySoulsCell" id="vgz-WK-ytF" customClass="SoulDataCell" customModule="PokeSearch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="blue" accessoryType="detailButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mySoulsCell" id="vgz-WK-ytF" customClass="SoulDataCell" customModule="PokeSearch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vgz-WK-ytF" id="cEs-5j-02Q">
@@ -2935,7 +3070,7 @@
                                 <rect key="frame" x="0.0" y="328" width="375" height="339"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="myFollowUpNotes" rowHeight="131" id="dW4-Si-mZ3" customClass="SoulDataCell" customModule="PokeSearch" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="myFollowUpNotes" rowHeight="131" id="dW4-Si-mZ3" customClass="SoulDataCell" customModule="PokeSearch" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="131"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dW4-Si-mZ3" id="Lba-0b-0eI">
@@ -3022,12 +3157,12 @@
                                     <constraint firstAttribute="height" constant="30" id="kOE-Gt-vDX"/>
                                 </constraints>
                             </view>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="lwv-gg-22e">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="lwv-gg-22e">
                                 <rect key="frame" x="0.0" y="300" width="375" height="29"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <segments>
-                                    <segment title="First"/>
-                                    <segment title="Second"/>
+                                    <segment title="add not "/>
+                                    <segment title="Notes"/>
                                 </segments>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
@@ -3082,6 +3217,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="5fp-tq-ICf"/>
         <segue reference="Xrv-rj-rnS"/>
-        <segue reference="OwH-Do-qMO"/>
     </inferredMetricsTieBreakers>
 </document>

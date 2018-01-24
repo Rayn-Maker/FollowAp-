@@ -61,6 +61,7 @@ class OrganizationHomeVC: UIViewController, MFMailComposeViewControllerDelegate,
     var emailString = String()
     var emailFile = String()
     var eventsIdToAdd: String!
+    var churchInfo = Churches()
     
     func setupVCData(){
        orgVCData.OrgId = iamUser[0]
@@ -213,8 +214,8 @@ class OrganizationHomeVC: UIViewController, MFMailComposeViewControllerDelegate,
       
     func retrieveMyLeaders() {
         let ref = FIRDatabase.database().reference()
-        ref.child("Organizations").child(self.orgVCData.OrgId!).child("Members").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
-            
+        ref.child("churches").child(self.churchInfo.churchID!).child("Members").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
+            //self.ref.child("churches").child(self.churchData.churchID!).updateChildValues(undrChurches)
             if snapshot.value is NSNull {
                 print("My Members folder is null")
             }
@@ -1035,6 +1036,10 @@ extension OrganizationHomeVC: UITableViewDataSource , UITableViewDelegate,  UISe
         } else {
             showMailError()
         }
+    }
+    
+    @IBAction func donewithSearch(_ sender: Any) {
+        self.leaderSearchTableView.isHidden = true 
     }
     
     func configureMailViewCOntroller() -> MFMailComposeViewController {

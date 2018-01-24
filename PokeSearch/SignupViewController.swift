@@ -247,9 +247,7 @@ class SignupViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func fetchZones(){
-//        let ref = FIRDatabase.database().reference()
-//        ref.child("Organizations").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
-//
+        
         ref.child("zones").queryOrderedByKey().observeSingleEvent(of: .value, with: { soulSnapShot in
             if soulSnapShot.value is NSNull {
                 

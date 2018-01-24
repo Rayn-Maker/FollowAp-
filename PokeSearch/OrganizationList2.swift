@@ -12,7 +12,7 @@ import FirebaseStorage
 import FirebaseDatabase
 import MessageUI
 
-class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
+class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate, UIPickerViewDataSource, UIPickerViewDelegate  {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,11 +22,14 @@ class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
         strn += (FIRAuth.auth()?.currentUser?.email)!
         authorsLbl.text = strn
         displayPic()
+        fetchMyChurch()
+        fetchZones()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         
-        fetchMyChurch() 
+//        fetchMyChurch()
+//        fetchZones()
     }
 
 
@@ -36,7 +39,8 @@ class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
     @IBOutlet weak var churchNames: UILabel!
     @IBOutlet weak var orgsListTableView: UITableView!
     @IBOutlet weak var authorsLbl: UILabel!
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var churchDpDn: UIPickerView!
+    @IBOutlet weak var zoneDpDn: UIPickerView!
 
     
     var strn = String()
@@ -51,6 +55,10 @@ class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
     var soulEmail = [SoulData]()
     var churchDisplay = [String]()
     var strng = ""
+    var zoneArray = [Zones]()
+    var churchArray = [Churches]()
+    var churchData = Churches()
+    var zoneData = Zones()
     
     func churchname(churcdd: [String]) {
         if churchDisplay.count > 0 {
@@ -141,6 +149,76 @@ class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
                 ref.removeAllObservers()
         
     }
+    
+    func fetchMyOrgs2(churchKey: String){
+        organization.removeAll()
+        myOrg.removeAll()
+        let ref = FIRDatabase.database().reference()
+        ref.child("churches").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
+            if snapshot.value is NSNull {
+                print("organiation folder is null")
+            }
+            
+            let users = snapshot.value as! [String : AnyObject]
+            
+            for (_, value) in users {
+                if let uid = value["churchKey"] as? String {
+                    if uid == churchKey {
+                        if let mygroups = value["cells"] as? [String : String]{
+                            for (_,orgs) in mygroups{
+                                self.myOrg.append(orgs)
+                            }
+                        }
+                        //  self.myOrg.append(FIRAuth.auth()!.currentUser!.uid)
+                        
+                        ref.child("Organizations").queryOrderedByKey().observeSingleEvent(of: .value, with: { (snap) in
+                            
+                            
+                            if snap.value is NSNull {
+                                print("organiation folder is null")
+                            }
+                            else {
+                                
+                                self.organization.removeAll()
+                                
+                                guard let groupsSanpshot = snap.value as? [String : AnyObject] else {return}
+                                
+                                for (_, value) in groupsSanpshot { //organizationID
+                                    if let organizationID = value["organizationID"] as? String {
+                                        for each in self.myOrg {
+                                            if each == organizationID {
+                                                let dateFormatter = DateFormatter()
+                                                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss +zzzz"
+                                                var organizationToShow = OrgData()
+                                                
+                                                if  let creator = value["creator"] as? String, let creatorID = value["creatorID"] as? String, let organizationName = value["organizationName"] as? String, let dateString = value["date"] as? String, let date = dateFormatter.date(from: dateString) {
+                                                    organizationToShow.OrgCreatorName = creator
+                                                    organizationToShow.OrgCreatorId = creatorID
+                                                    organizationToShow.OrgId = organizationID
+                                                    organizationToShow.OrgTitle = organizationName
+                                                    organizationToShow.date = date
+                                                    self.organization.insert(organizationToShow, at: 0)
+                                                }
+                                            }
+                                        }
+                                        
+                                        self.organization.sort(by: { $0.date.compare($1.date) == .orderedDescending })
+                                        self.orgsListTableView.reloadData()
+                                    }
+                                }
+                            }
+                            
+                        })
+                    }
+                } //
+            } //
+            self.organization.sort(by: { $0.date.compare($1.date) == .orderedDescending })
+             self.orgsListTableView.reloadData()
+            
+        })
+        ref.removeAllObservers()
+        
+    }
 
     func fetchMyChurch(){
         organization2.removeAll()
@@ -156,9 +234,9 @@ class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
                         if let mygroupss = value["MyChurch"] as? [String : String]{
                             for (_,orgs) in mygroupss {
                                 self.myChurch.append(orgs)
+                                self.churchData.churchID = orgs
                             }
                         }
-                        self.myChurch.append(FIRAuth.auth()!.currentUser!.uid)
                         
                         ref.child("churches").queryOrderedByKey().observeSingleEvent(of: .value, with: { (snap) in
                             
@@ -210,6 +288,47 @@ class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
         ref.removeAllObservers()
         
     }
+    
+    func fetchZones(){
+        
+        ref.child("zones").queryOrderedByKey().observeSingleEvent(of: .value, with: { soulSnapShot in
+            if soulSnapShot.value is NSNull {
+                
+                /// dont do anything
+            } else {
+                let zones = soulSnapShot.value as! [String:AnyObject]
+                for (a,b) in zones {
+                    
+                    var zone = Zones()
+                    var zoneaarray = [Churches]()
+                    
+                    if let zoneName = b["zoneName"] as? String, let zoneKey = b["zoneKey"]  as? String, let churcharray = b["churches"] as? [String:AnyObject] {
+                        zone.zoneName = zoneName
+                        zone.zoneKey = zoneKey
+                        for (c,d) in churcharray {
+                            var church = Churches()
+                            
+                            if let churchName = d["churchName"] as? String, let churchKey = d["churchKey"] as? String {
+                                church.churchName = churchName
+                                church.churchID = churchKey
+                                zoneaarray.append(church)
+                                zone.churchArray?.append(church)
+                            }
+                        }
+                        zone.churchArray = zoneaarray
+                        self.zoneArray.append(zone)
+                    }
+                    
+                }
+                self.zoneDpDn.reloadAllComponents()
+            }
+            self.zoneDpDn.reloadAllComponents()
+        })
+        
+        self.zoneDpDn.reloadAllComponents()
+        ref.removeAllObservers()
+    }
+    
 
     
     func creatNewGroup(){
@@ -309,9 +428,8 @@ class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
             vc.iamUser.append(organization[(indexPath!.row)].OrgTitle!)
             vc.iamUser.append(organization[(indexPath!.row)].OrgCreatorName!)
             vc.iamUser.append(organization[(indexPath!.row)].OrgCreatorId!)
+            vc.churchInfo = self.churchData
         
-            
-            
         }
     }
     
@@ -339,6 +457,96 @@ class OrganizationList2: UIViewController, MFMailComposeViewControllerDelegate {
 //       performSegue(withIdentifier: "signout", sender: nil)
 //        dismiss(animated: true, completion: nil)
        
+    }
+    
+    @IBAction func switchZonesPressed(_ sender: Any) {
+        self.zoneDpDn.isHidden = false
+        self.churchDpDn.isHidden = true
+    }
+    
+    @IBAction func switchChurchPresd(_ sender: Any) {
+        self.zoneDpDn.isHidden = true
+        self.churchDpDn.isHidden = false
+        
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        
+        if pickerView == zoneDpDn {
+            return zoneArray.count
+        }
+        if pickerView == churchDpDn {
+            return  churchArray.count
+        }
+        else {
+            return 0
+        }
+        
+    }
+    
+    
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+       
+        if pickerView == churchDpDn {
+           
+            if churchArray.count > 0 {
+                fetchMyOrgs(churchKey: churchArray[row].churchID!)
+                churchData.churchID = churchArray[row].churchID
+            }
+            
+                
+            self.churchDpDn.isHidden = true
+        }
+        if pickerView == zoneDpDn {
+           
+            // make a call to firebase with zone selected.
+            self.zoneDpDn.isHidden = true
+            if self.zoneArray[row].churchArray != nil {
+                if self.zoneArray[row].churchArray!.count > 0 {
+                    zoneData.zoneKey = self.zoneArray[row].zoneKey
+                    churchArray = self.zoneArray[row].churchArray!
+                    churchDpDn.reloadAllComponents()
+                } else
+                {
+                    let church = Churches()
+                    church.churchName = "no church for this zone"
+                    churchArray.append(church)
+                    churchDpDn.reloadAllComponents()
+                }
+            }
+        }
+        else
+        {
+            let church = Churches()
+            //church.churchName = "no church for this zone"
+           // churchArray.append(church)
+            churchDpDn.reloadAllComponents()
+        }
+        
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        
+        if pickerView == zoneDpDn {
+            return zoneArray[row].zoneName
+        }
+         if pickerView == churchDpDn {
+            return churchArray[row].churchName
+        }
+         else {
+            return ""
+        }
+        
+    }
+    
+    @IBAction func backPressed(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+        
     }
     
    

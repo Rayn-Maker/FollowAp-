@@ -23,7 +23,7 @@ class MyInvitesVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        retrieveSouls()
+        //retrieveSouls()
     }
     
     
@@ -119,8 +119,11 @@ class MyInvitesVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                         self.tableView.reloadData()
                         
                     })
-                    
+                    ref.removeAllObservers()
                 }
+            self.soulArray.sort(by: { $0.firstName < $1.firstName })
+            self.formatEmailMessage()
+            self.tableView.reloadData()
             })
             ref.removeAllObservers()
        
