@@ -16,8 +16,6 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
 
     
     @IBOutlet weak var cancelBtn: UIButton!
-    @IBOutlet weak var sendSoulBtn: UIButton!
-    @IBOutlet weak var moveSouls: UIButton!
     @IBOutlet weak var orgNameTitle: UILabel!
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == soulstableView {
@@ -72,6 +70,10 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
        retrieveSouls()
         retrieveAttendanceArray()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        retrieveAttendanceArray()
     }
     
     func checkEvent() {
@@ -159,7 +161,7 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     func retrieveAttendanceArray() {
         
         let ref = FIRDatabase.database().reference()
-        ref.child("Organizations").child(self.orgID!).child("Events").child(self.eventID!).queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
+        ref.child("Organizations").child(self.orgID!).child("Events").queryOrderedByKey().observeSingleEvent(of: .value, with: { snapshot in
             
             
             if snapshot.value is NSNull {
@@ -170,19 +172,14 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                 let users = snapshot.value as! [String : AnyObject]
                 
                 
-                for (_, value) in users {
+                for (eventKey, value) in users {
                     
+                    if eventKey == self.eventInfo.eventId {
+                        
                     var attendanceArray = [Attendance]()
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss +zzzz"
                     let eventToPost = EventData()
-//                    if let author = value["creator"] as? String, let eventID = value["EventID"] as? String,  let eventTitle = value["EventName"] as? String, let creatorID = value["creatorID"] as? String, let dateString = value["date"] as? String, let date = dateFormatter.date(from: dateString) {
-//                        eventToPost.eventCreatorName = author
-//                        eventToPost.eventId = eventID
-//                        eventToPost.eventCreatorId = creatorID
-//                        eventToPost.eventName = eventTitle
-//                        eventToPost.date = date
-//
                     
                         if let attendance = value["Attendance"] as? [String : AnyObject] {
                             let dateFormatters = DateFormatter()
@@ -212,6 +209,7 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
                         eventToPost.attendanceArray = attendanceArray
                         self.eventArrayAttendance.attendanceArray = attendanceArray
                     }
+                }
                 }
             }
 
@@ -301,7 +299,7 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
             vc.eventID = eventID
             vc.eventName = eventName
             vc.orgID = orgID
-            vc.attendancd = eventInfo.attendanceArray  //eventArrayAttendance.attendanceArray
+            vc.attendancd = eventArrayAttendance.attendanceArray
             
             
         }
@@ -385,78 +383,24 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
 
 
     @IBOutlet weak var saveBtn: UIButton!
-    
-    @IBOutlet weak var newSoulBtn: UIButton!
-    
 
-    
-    func hideSoulProfile() {
-        
-//        formerSoulFirstNameLabel.isHidden = true
-//        formerSoulLastNameLabel.isHidden = true
-//        formerSoulEmailLabel.isHidden = true
-//        formerSoulAddressLabel.isHidden = true
-//        formerSoulSchoolLabel.isHidden = true
-//        formerSoulSexLabel.isHidden = true
-//        formerSoulRaceLabel.isHidden = true
-//        formerSoulPhoneLabel.isHidden = true
-        
-    }
-    
-    func showSoulProfile() {
-        
-//        formerSoulFirstNameLabel.isHidden = false
-//        formerSoulLastNameLabel.isHidden = false
-//        formerSoulEmailLabel.isHidden = false
-//        formerSoulAddressLabel.isHidden = false
-//        formerSoulSchoolLabel.isHidden = false
-//        formerSoulSexLabel.isHidden = false
-//        formerSoulRaceLabel.isHidden = false
-//        formerSoulPhoneLabel.isHidden = false
-        saveBtn.isHidden = true
-    }
+
     
     func firsView() {
         saveBtn.isHidden = true
-        hideSoulProfile()
+    
         hideNewSoulText()
         soulstableView.isHidden = false
-        newSoulBtn.isHidden = false
         pageName.isHidden = false
-        orgNameTitle.isHidden = false
-        newSoulBtn.isHidden = false
+        orgNameTitle.isHidden = false 
 //        hiThereLbl.isHidden = true
         cancelBtn.isHidden = true
-        sendSoulBtn.isHidden = false
-       moveSouls.isHidden = true
     }
     
     
     
     ///////////////////////////// Soul To Add outlets done  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-    func connectLabelToSoul() {
-        
 
-//        formerSoulFirstNameLabel.text = formerSoulFirstName
-//        formerSoulLastNameLabel.text = formerSoulLastName
-//        formerSoulEmailLabel.text = formerSoulEmail
-//        formerSoulAddressLabel.text = formerSoulAddress
-//        formerSoulSchoolLabel.text = formerSoulSchool
-//        formerSoulSexLabel.text = formerSoulSex
-//        formerSoulRaceLabel.text = formerSoulRace
-    }
-    
-    func labelsForNewSoul() {
-        
-//        formerSoulFirstNameLabel.text = "First Name"
-//        formerSoulLastNameLabel.text = "Last Name"
-//        formerSoulEmailLabel.text = "Email"
-//        formerSoulAddressLabel.text = "Address"
-//        formerSoulSchoolLabel.text = "School"
-//        formerSoulSexLabel.text = "Sex"
-//        formerSoulRaceLabel.text = "Race"
-//        formerSoulPhoneLabel.text = "Phone #"
-    }
     
     func cleanLabels() {
         
@@ -476,25 +420,8 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     
     
     var ref: FIRDatabaseReference!
-    
-    @IBAction func sendSoulPresed(_ sender: Any){
-        
-        self.sendSoulBtn.titleLabel!.text = "done"
-        
-        eventsdropdown.isHidden = false
-        sendSoulBtn.isHidden = true
-        moveSouls.isHidden = false
-        
-    }
-    
-    @IBAction func sendSouls(_ sender: Any){
-        pageName.text = eventInfo.eventName
-        orgNameTitle.text = orgName
-        soulAddTableView.isHidden = true
-        sendSoulBtn.isHidden = false 
-         moveSouls.isHidden = true
-    }
-    
+ 
+ 
     @IBAction func savePressed(_ sender: Any) {
    
     var userName: String!
@@ -535,24 +462,20 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
         soulstableView.isHidden = false
         pageName.isHidden = false
         orgNameTitle.isHidden = false
-        newSoulBtn.isHidden = false
         hideNewSoulText()
         saveBtn.isHidden = true
-        cleanLabels()
-        retrieveSouls()
         view.endEditing(true)
         firsView()
         soulstableView.isHidden = false
         pageName.isHidden = false
         orgNameTitle.isHidden = false
-        newSoulBtn.isHidden = false
         hideNewSoulText()
         saveBtn.isHidden = true
         cleanLabels()
         retrieveSouls()
     
     } else if (phoneNumber.text?.characters.count)! < 10 || phoneNumber.text != ""{
-        let alert = UIAlertController(title: "Wrong Phone Number", message: "Please Provide a valid 10 digit phone number starting with the area code", preferredStyle: .alert)
+        let alert = UIAlertController(title: "MISING INFO", message: "Please Provide a information for first last name and phone#", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
@@ -574,53 +497,35 @@ class EventHomeVC: UIViewController, UITableViewDelegate, UITableViewDataSource,
     }
     
     
-
-    @IBAction func newSoulPressed(_ sender: Any) {
-        
-        soulstableView.isHidden = true
-        pageName.isHidden = true
-        orgNameTitle.isHidden = true
-        newSoulBtn.isHidden = true
-        labelsForNewSoul()
-        showSoulProfile()
-        showNewSoulData()
-        saveBtn.isHidden = false
-        cancelBtn.isHidden = false
-        sendSoulBtn.isHidden = true
-    }
-    
+ 
     @IBAction func refresh(_ sender: Any) {
         viewDidLoad()
     }
     
     @IBAction func urgencyToggle(_ sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0{
-            self.sendSoulBtn.titleLabel!.text = "done"
-            eventsdropdown.isHidden = false
-            sendSoulBtn.isHidden = true
-            moveSouls.isHidden = false
-            if sender.selectedSegmentIndex == 0 {
-                sender.selectedSegmentIndex = 2
-    
+            if eventArray.count > 0 {
+                eventsdropdown.isHidden = false
+                self.soulstableView.isHidden = true
+                self.soulAddTableView.isHidden = false
+              
             }
-            sender.isSelected = false
+           
         } else if sender.selectedSegmentIndex == 1 {
             sender.selectedSegmentIndex = 2
             performSegue(withIdentifier: "eventManagement", sender: self)
             
         } else if sender.selectedSegmentIndex == 2 {
-            sender.selectedSegmentIndex = 2
+           // sender.selectedSegmentIndex = 2
+            self.soulstableView.isHidden = false
+            self.soulAddTableView.isHidden = true
         } else if sender.selectedSegmentIndex == 3 {
             soulstableView.isHidden = true
             pageName.isHidden = true
-            orgNameTitle.isHidden = true
-            newSoulBtn.isHidden = true
-            labelsForNewSoul()
-            showSoulProfile()
+            orgNameTitle.isHidden = true 
             showNewSoulData()
             saveBtn.isHidden = false
             cancelBtn.isHidden = false
-            sendSoulBtn.isHidden = true
             sender.isSelected = false
             sender.selectedSegmentIndex = 2
         }

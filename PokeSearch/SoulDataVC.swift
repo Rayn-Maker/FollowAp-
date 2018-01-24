@@ -389,8 +389,10 @@ class SoulDataVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         if phonNumber.count > 10 {
             phonNumber.removeFirst(1)
         }
-
-        guard let number = URL(string: "tel://" + self.phonNumber) else { return
+        let dd =  (self.phonNumber as NSString).integerValue
+        
+        guard let number = URL(string: "tel://" + "\(dd )") else {
+            return
             // set an aler
             
         }

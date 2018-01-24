@@ -1039,7 +1039,10 @@ extension OrganizationHomeVC: UITableViewDataSource , UITableViewDelegate,  UISe
     }
     
     @IBAction func donewithSearch(_ sender: Any) {
-        self.leaderSearchTableView.isHidden = true 
+        self.leaderSearchTableView.isHidden = true
+        self.eventsTableView.isHidden = false
+        self.searchBar.isHidden = true
+        view.endEditing(true)
     }
     
     func configureMailViewCOntroller() -> MFMailComposeViewController {

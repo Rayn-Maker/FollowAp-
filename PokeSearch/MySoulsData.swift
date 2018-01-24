@@ -307,9 +307,9 @@ class MySoulsData: UIViewController, UITableViewDelegate, UITableViewDataSource,
         if phonNumbers.count > 10 {
             String(self.phonNumbers.characters.dropLast())
         }
-        let dd = self.phonNumbers
+        let dd =  (self.phonNumbers as NSString).integerValue
         
-        guard let number = URL(string: "tel://" + dd) else {
+        guard let number = URL(string: "tel://" + "\(dd ?? 8888888888)") else {
             
             let ref = FIRDatabase.database().reference()
             let dateString = String(describing: Date())
